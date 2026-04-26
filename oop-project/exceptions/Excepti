@@ -1,0 +1,18 @@
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Exceptions {
+
+	public Exceptions() {
+	}
+
+	public void LowHIndexException;
+
+	public void NonResearcherException;
+
+	public void CreditLimitExceededException;
+
+}

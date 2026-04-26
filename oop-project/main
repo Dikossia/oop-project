@@ -1,0 +1,635 @@
+===== FILE: ./academic/Enrollment.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Enrollment {
+
+	public Student student;
+	public Course course;
+	public Mark mark;
+
+	public Enrollment() {
+	}
+
+}
+
+
+
+===== FILE: ./academic/Request.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Request {
+
+	public int id;
+	public Employee sender;
+	public RequestType type;
+	public RequestStatus status;
+	public String description;
+
+	public Request() {
+	}
+
+	public void approve() {
+
+	}
+
+	public void reject() {
+
+	}
+
+}
+
+
+
+===== FILE: ./academic/Report.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Report {
+
+	public ReportType type;
+	public Date createdDate;
+	public String data;
+
+	public Report() {
+	}
+
+	public void generate() {
+
+	}
+
+}
+
+
+
+===== FILE: ./academic/Mark.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Mark {
+
+	public double att1;
+	public double att2;
+	public double finalExam;
+
+	public Mark() {
+	}
+
+	public double getTotal() {
+		return att1 + att2 + finalExam;
+	}
+
+}
+
+
+
+===== FILE: ./academic/Lesson.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Lesson {
+
+	public Date time;
+	public String room;
+	public LessonType type;
+
+	public Lesson() {
+	}
+
+}
+
+
+
+===== FILE: ./academic/Course.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Course {
+
+	public String name;
+	public String code;
+	public int credits;
+	public boolean isOpen;
+	public int allowedYear;
+
+	public Course() {
+	}
+
+	public void addStudent() {
+
+	}
+
+	public void addInstructor() {
+
+	}
+
+}
+
+
+
+===== FILE: ./core/AuthService.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class AuthService {
+
+	public AuthService() {
+	}
+
+	public void login() {
+
+	}
+
+	public void logout() {
+
+	}
+
+}
+
+
+
+===== FILE: ./core/University.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class University {
+
+	public List<User> users;
+	public List<Course> courses;
+	public List<ResearchProject> projects;
+
+	public University() {
+		users = new ArrayList<User>();
+		courses = new ArrayList<Course>();
+		projects = new ArrayList<ResearchProject>();
+	}
+
+	public static University getInstance() {
+		return new University();
+	}
+
+}
+
+
+
+===== FILE: ./core/Log.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Log {
+
+	public User user;
+	public String action;
+	public Date date;
+
+	public Log() {
+	}
+
+}
+
+
+
+===== FILE: ./exceptions/Exceptions.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Exceptions {
+
+	public Exceptions() {
+	}
+
+	public void LowHIndexException;
+
+	public void NonResearcherException;
+
+	public void CreditLimitExceededException;
+
+}
+
+
+
+===== FILE: ./research/ResearchProject.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class ResearchProject {
+
+	public String topic;
+	public List<Researcher> participants;
+	public List<ResearchPaper> papers;
+
+	public ResearchProject() {
+		participants = new ArrayList<Researcher>();
+		papers = new ArrayList<ResearchPaper>();
+	}
+
+	public void addParticipant() {
+
+	}
+
+}
+
+
+
+===== FILE: ./research/Researcher.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public interface Researcher {
+
+	public int getHIndex();
+
+	public List<ResearchPaper> getPapers();
+
+	public void printPapers(Comparator<ResearchPaper> c);
+
+}
+
+
+
+===== FILE: ./research/ResearchPaper.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class ResearchPaper {
+
+	public String title;
+	public String journal;
+	public int pages;
+	public int citations;
+	public Date publishDate;
+	public String doi;
+
+	public ResearchPaper() {
+	}
+
+}
+
+
+
+===== FILE: ./enums/TeacherType.java =====
+/**
+ * 
+ */
+public enum TeacherType {
+    TUTOR,
+    LECTOR,
+    SENIOR_LECTOR,
+    PROFESSOR
+}
+
+
+
+===== FILE: ./enums/ManagerType.java =====
+/**
+ * 
+ */
+public enum ManagerType {
+    OR_MANAGER,
+    DEPARTAMENT_MANAGER
+}
+
+
+
+===== FILE: ./enums/ReportType.java =====
+/**
+ * 
+ */
+public enum ReportType {
+    STUDENT_PERFORMANCE,
+    COURSE_STATISTICS,
+    TEACHER_RATING
+}
+
+
+
+===== FILE: ./enums/RequestStatus.java =====
+/**
+ * 
+ */
+public enum RequestStatus {
+    PENDING,
+    APPROVED,
+    REJECTED
+}
+
+
+
+===== FILE: ./enums/RequestType.java =====
+/**
+ * 
+ */
+public enum RequestType {
+    COURSE_OPEN,
+    GRADE_CHANGE,
+    SCHEDULE_CHANGE,
+    OTHER
+}
+
+
+
+===== FILE: ./enums/LessonType.java =====
+/**
+ * 
+ */
+public enum LessonType {
+    LECTURE,
+    PRACTICE
+}
+
+
+
+===== FILE: ./users/User.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public abstract class User {
+
+	public int id;
+	public String username;
+	public String password;
+	public String email;
+
+	public User() {
+	}
+
+	public User(int id, String username, String password, String email) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+}
+
+
+
+===== FILE: ./users/News.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class News {
+
+	public String title;
+	public String content;
+	public Date date;
+	public Manager author;
+
+	public News() {
+	}
+
+}
+
+
+
+===== FILE: ./users/Manager.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Manager extends Employee {
+
+	public ManagerType type;
+
+	public Manager() {
+	}
+
+	public void approveRegistration() {
+
+	}
+
+	public void assignTeacher() {
+
+	}
+
+	public void generateReport() {
+
+	}
+
+	public void rejectRegistration() {
+
+	}
+
+	public void createCourse() {
+
+	}
+
+	public void openCourseForRegistration() {
+
+	}
+
+	public void viewStudents() {
+
+	}
+
+	public void manageNews() {
+
+	}
+
+}
+
+
+
+===== FILE: ./users/Admin.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Admin extends Employee {
+
+	public Admin() {
+	}
+
+	public void addUser(User user) {
+
+	}
+
+	public void removeUser(User user) {
+
+	}
+
+	public void updateLogs() {
+
+	}
+
+	public void blockUser(User user) {
+
+	}
+
+	public void assignRole(User user) {
+
+	}
+
+}
+
+
+
+===== FILE: ./users/Teacher.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Teacher extends Employee {
+
+	public TeacherType title;
+	public List<Course> courses;
+
+	public Teacher() {
+		courses = new ArrayList<Course>();
+	}
+
+	public void putMark() {
+
+	}
+
+	public void viewStudents() {
+
+	}
+
+}
+
+
+
+===== FILE: ./users/Employee.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public abstract class Employee extends User {
+
+	public double salary;
+	public Date hireDate;
+
+	public Employee() {
+	}
+
+	public Employee(int id, String username, String password,
+		String email, double salary, Date hireDate) {
+
+		super(id, username, password, email);
+		this.salary = salary;
+		this.hireDate = hireDate;
+	}
+
+}
+
+
+
+===== FILE: ./users/Student.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Student extends User {
+
+	public double gpa;
+	public int year;
+	public int credits;
+	public int failedCourses;
+
+	public Student() {
+	}
+
+	public Student(int id, String username, String password,
+		String email, double gpa, int year, int credits,
+		int failedCourses) {
+
+		super(id, username, password, email);
+		this.gpa = gpa;
+		this.year = year;
+		this.credits = credits;
+		this.failedCourses = failedCourses;
+	}
+
+	public void registerCourse() {
+
+	}
+
+	public void viewTranscript() {
+
+	}
+
+}
+
+
+
+===== FILE: ./main =====
+
+
+
+===== FILE: ./Main.java =====
+
+
+
