@@ -1,10 +1,22 @@
 package research;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public interface Researcher {
-	int getHIndex();
-	List<ResearchPaper> getPapers();
-	void printPapers(Comparator<ResearchPaper> c);
+
+    /**
+     * @return
+     */
+    int getHIndex();
+
+    /**
+     * @return
+     */
+    List<ResearchPaper> getPapers();
+
+    /**
+     * @param c
+     */
+    void printPapers(Comparator<ResearchPaper> c);
+
 }
