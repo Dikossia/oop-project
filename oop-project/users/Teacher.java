@@ -2,10 +2,13 @@ package users;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import academic.Course;
+import academic.Lesson;
 import academic.Mark;
+import academic.StudyMaterial;
 import research.ResearchPaper;
 import research.Researcher;
 import enums.TeacherType;
@@ -30,6 +33,22 @@ public class Teacher extends Employee implements Researcher {
 		for(Course c : courses) {
 			System.out.println(c.name);
 		}
+	}
+
+	public void addLessonToCourse(Course course, Lesson lesson) {
+		if(!courses.contains(course)) {
+			courses.add(course);
+		}
+		course.addLesson(lesson);
+	}
+
+	public StudyMaterial uploadMaterial(Course course, String title, String description, String fileName, Date deadline, boolean isTask) {
+		if(!courses.contains(course)) {
+			courses.add(course);
+		}
+		StudyMaterial material = new StudyMaterial(title, description, fileName, deadline, isTask, this, course);
+		course.addMaterial(material);
+		return material;
 	}
 
 	public int getHIndex() {

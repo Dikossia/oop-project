@@ -13,6 +13,8 @@ public class Course {
 
     public List<Student> students;
     public List<Teacher> instructors;
+    public List<Lesson> lessons;
+    public List<StudyMaterial> materials;
 
     public Course(String name, String code, int credits) {
         this.name = name;
@@ -20,6 +22,8 @@ public class Course {
         this.credits = credits;
         this.students = new ArrayList<Student>();
         this.instructors = new ArrayList<Teacher>();
+        this.lessons = new ArrayList<Lesson>();
+        this.materials = new ArrayList<StudyMaterial>();
     }
 
     public void addStudent(Student s) {
@@ -28,5 +32,13 @@ public class Course {
 
     public void addInstructor(Teacher t) {
         instructors.add(t);
+    }
+
+    public void addLesson(Lesson lesson) {
+        lessons.add(lesson);
+    }
+
+    public void addMaterial(StudyMaterial material) {
+        materials.add(material);
     }
 }

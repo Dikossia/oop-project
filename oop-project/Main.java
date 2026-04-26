@@ -17,6 +17,11 @@ public class Main {
 
         List<Course> courses = DataLoader.loadCourses("courses.txt");
         uni.courses.addAll(courses);
+        if(uni.courses.isEmpty()) {
+            Course fallbackCourse = new Course("Object Oriented Programming", "CS101", 3);
+            fallbackCourse.isOpen = true;
+            uni.courses.add(fallbackCourse);
+        }
 
         System.out.println("Courses loaded:");
         for(Course c : uni.courses) {
@@ -61,6 +66,17 @@ public class Main {
 
         System.out.println("Teacher assigned to course: " + course.name);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2026, Calendar.APRIL, 27, 10, 0);
+        Lesson lecture = new Lesson(calendar.getTime(), "B-201", LessonType.LECTURE);
+        t.addLessonToCourse(course, lecture);
+
+        calendar.set(2026, Calendar.APRIL, 29, 12, 0);
+        Lesson practice = new Lesson(calendar.getTime(), "LAB-5", LessonType.PRACTICE);
+        t.addLessonToCourse(course, practice);
+
+        System.out.println("Schedule created for course");
+
 
         Enrollment en = new Enrollment(s, course);
 
@@ -76,6 +92,20 @@ public class Main {
         t.putMark(en.mark, 30, 30, 40);
 
         System.out.println("Marks added");
+
+        calendar.set(2026, Calendar.MAY, 5, 23, 59);
+        t.uploadMaterial(course, "Week 1 slides", "Introduction to course topics", "week1.pdf", null, false);
+        StudyMaterial hw1 = t.uploadMaterial(course, "Homework 1", "Solve OOP exercises", "hw1.docx", calendar.getTime(), true);
+        System.out.println("Teacher uploaded files and tasks");
+
+        System.out.println("\n=== STUDENT SCHEDULE ===");
+        s.viewSchedule();
+
+        System.out.println("\n=== LEARNING FILES ===");
+        s.viewLearningFiles();
+
+        s.solveTask(hw1, "My homework solution text");
+        System.out.println("Saved solution: " + hw1.getSubmission(s.id));
 
 
         System.out.println("\n=== TRANSCRIPT ===");
@@ -97,8 +127,15 @@ public class Main {
 
         System.out.println("\n=== RESEARCH ===");
 
-        ResearchPaper p1 = new ResearchPaper("AI", 10);
-        ResearchPaper p2 = new ResearchPaper("ML", 50);
+        List<Researcher> authors = new ArrayList<Researcher>();
+        authors.add(t);
+        ResearchPaper p1 = new ResearchPaper("10.1000/ai-1", "AI", "Journal of AI", 10, authors);
+        ResearchPaper p2 = new ResearchPaper("10.1000/ml-1", "ML", "Journal of ML", 50, authors);
+        p1.addCitation();
+        p1.addCitation();
+        p2.addCitation();
+        p2.addCitation();
+        p2.addCitation();
 
         t.papers.add(p1);
         t.papers.add(p2);
@@ -107,13 +144,17 @@ public class Main {
 
         t.printPapers(new Comparator<ResearchPaper>() {
             public int compare(ResearchPaper a, ResearchPaper b) {
-                return b.citations - a.citations;
+                return b.getCitations() - a.getCitations();
             }
         });
 
 
         ResearchProject rp = new ResearchProject("Deep Learning");
-        rp.addParticipant(t);
+        try {
+            rp.addParticipant(t);
+        } catch(Exception e) {
+            System.out.println("Cannot add participant: " + e.getMessage());
+        }
         rp.addPaper(p1);
 
         uni.projects.add(rp);
