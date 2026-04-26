@@ -625,11 +625,251 @@ public class Student extends User {
 
 
 
+===== FILE: ./scheduler/Schedule.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Schedule {
+
+	public User owner;
+	public List<ScheduleEntry> entries;
+
+	public Schedule() {
+		entries = new ArrayList<ScheduleEntry>();
+	}
+
+	public void addEntry(ScheduleEntry entry) {
+		entries.add(entry);
+	}
+
+	public void removeEntry(ScheduleEntry entry) {
+		entries.remove(entry);
+	}
+
+	public List<ScheduleEntry> getEntries() {
+		return entries;
+	}
+
+}
+
+
+
+===== FILE: ./scheduler/ScheduleEntry.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class ScheduleEntry {
+
+	public Lesson lesson;
+	public TimeSlot timeSlot;
+	public Room room;
+
+	public ScheduleEntry() {
+	}
+
+	public ScheduleEntry(Lesson lesson, TimeSlot timeSlot, Room room) {
+		this.lesson = lesson;
+		this.timeSlot = timeSlot;
+		this.room = room;
+	}
+
+}
+
+
+
+===== FILE: ./scheduler/TimeSlot.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class TimeSlot {
+
+	public DayOfWeek day;
+	public String startTime;
+	public String endTime;
+
+	public TimeSlot() {
+	}
+
+	public TimeSlot(DayOfWeek day, String startTime, String endTime) {
+		this.day = day;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+}
+
+
+
+===== FILE: ./scheduler/Room.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Room {
+
+	public String roomNumber;
+	public int capacity;
+	public RoomType type;
+
+	public Room() {
+	}
+
+	public Room(String roomNumber, int capacity, RoomType type) {
+		this.roomNumber = roomNumber;
+		this.capacity = capacity;
+		this.type = type;
+	}
+
+}
+
+
+
+===== FILE: ./enums/DayOfWeek.java =====
+/**
+ * 
+ */
+public enum DayOfWeek {
+	MONDAY,
+	TUESDAY,
+	WEDNESDAY,
+	THURSDAY,
+	FRIDAY,
+	SATURDAY,
+	SUNDAY
+}
+
+
+
+===== FILE: ./enums/RoomType.java =====
+/**
+ * 
+ */
+public enum RoomType {
+	LECTURE_HALL,
+	LAB,
+	CLASSROOM
+}
+
+
+
+===== FILE: ./materials/CourseMaterial.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public abstract class CourseMaterial {
+
+	public String title;
+	public Date uploadDate;
+	public Teacher author;
+
+	public CourseMaterial() {
+		uploadDate = new Date();
+	}
+
+	public void view() {
+
+	}
+
+}
+
+
+
+===== FILE: ./materials/Book.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Book extends CourseMaterial {
+
+	public String authorName;
+	public int pages;
+
+	public Book() {
+	}
+
+}
+
+
+
+===== FILE: ./materials/LectureMaterial.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class LectureMaterial extends CourseMaterial {
+
+	public String topic;
+	public String filePath;
+
+	public LectureMaterial() {
+	}
+
+}
+
+
+
+===== FILE: ./materials/Task.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Task extends CourseMaterial {
+
+	public Date deadline;
+	public int maxScore;
+
+	public Task() {
+	}
+
+}
+
+
+
+===== FILE: ./materials/Submission.java =====
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public class Submission {
+
+	public Student student;
+	public Task task;
+	public String content;
+	public double grade;
+
+	public Submission() {
+	}
+
+}
+
+
+
 ===== FILE: ./main =====
 
 
 
 ===== FILE: ./Main.java =====
-
 
 
