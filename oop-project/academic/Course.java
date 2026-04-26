@@ -1,39 +1,32 @@
 package academic;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 import users.Student;
 import users.Teacher;
 
 public class Course {
-	public String name;
-	public String code;
-	public int credits;
-	public boolean isOpen;
-	public int allowedYear;
 
-	public List<Student> students;
-	public List<Teacher> teachers;
+    public String name;
+    public String code;
+    public int credits;
+    public boolean isOpen;
 
-	public Course() {
-		students = new ArrayList<Student>();
-		teachers = new ArrayList<Teacher>();
-	}
+    public List<Student> students;
+    public List<Teacher> instructors;
 
-	public Course(String name, String code, int credits) {
-		this();
-		this.name = name;
-		this.code = code;
-		this.credits = credits;
-	}
+    public Course(String name, String code, int credits) {
+        this.name = name;
+        this.code = code;
+        this.credits = credits;
+        this.students = new ArrayList<Student>();
+        this.instructors = new ArrayList<Teacher>();
+    }
 
-	public void addStudent(Student s) {
-		students.add(s);
-	}
+    public void addStudent(Student s) {
+        students.add(s);
+    }
 
-	public void addInstructor(Teacher t) {
-		teachers.add(t);
-		t.courses.add(this);
-	}
+    public void addInstructor(Teacher t) {
+        instructors.add(t);
+    }
 }
