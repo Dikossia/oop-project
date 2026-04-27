@@ -10,18 +10,18 @@ public class ResearchPaper implements Comparable<ResearchPaper>
     private final String journal;
     private final int pages;
     private int citations;
-    private final LocalDate publishDate;
+    private final Date publishDate;
     private final List<Researcher> authors;
 
 
-    public ResearchPaper(String doi, String title, String journal, int pages, List<Researcher> authors)
+    public ResearchPaper(String doi, String title, String journal, int pages, Date publishDate, List<Researcher> authors)
     {
         this.doi = doi;
         this.title = title;
         this.journal = journal;
         this.pages = pages;
         this.citations = 0;
-        this.publishDate = LocalDate.now();
+        this.publishDate = publishDate;
         this.authors = new ArrayList<>(authors);
     }
 
@@ -55,7 +55,7 @@ public class ResearchPaper implements Comparable<ResearchPaper>
         return citations;
     }
 
-    public LocalDate getPublishDate()
+    public Date getPublishDate()
     {
         return publishDate;
     }
@@ -113,5 +113,4 @@ public class ResearchPaper implements Comparable<ResearchPaper>
     {
         return Integer.compare(this.citations, o.citations);
     }
-
 }

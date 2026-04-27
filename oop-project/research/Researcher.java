@@ -2,21 +2,16 @@ package research;
 
 import java.util.*;
 
-public interface Researcher {
-
-    /**
-     * @return
-     */
+public interface Researcher
+{
     int getHIndex();
 
-    /**
-     * @return
-     */
+    void updateHIndex();
+
+    void addPaper(ResearchPaper paper);
+
     List<ResearchPaper> getPapers();
 
-    /**
-     * @param c
-     */
     void printPapers(Comparator<ResearchPaper> c);
 
 }
