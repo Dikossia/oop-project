@@ -1,0 +1,10 @@
+OOP,CS2001,3
+Database Systems,CS2002,4
+Discrete Math,CS2003,5
+Algorithms,CS2004,5
+Linear Algebra,CS2005,4
+Operating Systems,CS2006,5
+Software Engineering,CS2007,3
+Computer Networks,CS2008,4
+AI Fundamentals,CS2009,5
+Web Development,CS2010,3
