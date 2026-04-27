@@ -51,8 +51,23 @@ public class Teacher extends Employee implements Researcher {
 		return material;
 	}
 
+	@Override
 	public int getHIndex() {
 		return papers.size();
+	}
+
+	@Override
+	public boolean addPaper(ResearchPaper paper)
+	{
+		for (ResearchPaper rp: papers)
+		{
+			if (rp.getDoi().equals(paper.getDoi()))
+			{
+				return false;
+			}
+		}
+
+		return papers.add(paper);
 	}
 
 	public List<ResearchPaper> getPapers() {

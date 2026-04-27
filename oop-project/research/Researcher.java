@@ -6,12 +6,11 @@ public interface Researcher
 {
     int getHIndex();
 
-    void updateHIndex();
+    //void updateHIndex();
 
-    void addPaper(ResearchPaper paper);
+    boolean addPaper(ResearchPaper paper);
 
     List<ResearchPaper> getPapers();
 
     void printPapers(Comparator<ResearchPaper> c);
-
 }

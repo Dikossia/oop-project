@@ -1,9 +1,5 @@
 package users;
 
-import java.io.*;
-import java.util.*;
-
-
 public abstract class User {
 	public int id;
 	public String username;
