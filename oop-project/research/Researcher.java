@@ -6,7 +6,7 @@ public interface Researcher
 {
     int getHIndex();
 
-    //void updateHIndex();
+    void updateHIndex();
 
     boolean addPaper(ResearchPaper paper);
 

@@ -17,10 +17,12 @@ public class Teacher extends Employee implements Researcher {
 	public TeacherType title;
 	public List<Course> courses;
 	public List<ResearchPaper> papers;
+	private int hIndex;
 
 	public Teacher() {
 		courses = new ArrayList<Course>();
 		papers = new ArrayList<ResearchPaper>();
+		hIndex = 0;
 	}
 
 	public void putMark(Mark mark, double a1, double a2, double fin) {
@@ -53,7 +55,22 @@ public class Teacher extends Employee implements Researcher {
 
 	@Override
 	public int getHIndex() {
-		return papers.size();
+		return hIndex;
+	}
+
+	@Override
+	public void updateHIndex()
+	{
+		int paperCount = papers.size();
+		hIndex = 0;
+
+		for (ResearchPaper paper: papers)
+		{
+			if (paper.getCitations() >= paperCount)
+			{
+				hIndex++;
+			}
+		}
 	}
 
 	@Override
@@ -67,7 +84,10 @@ public class Teacher extends Employee implements Researcher {
 			}
 		}
 
-		return papers.add(paper);
+		papers.add(paper);
+		updateHIndex();
+
+		return true;
 	}
 
 	public List<ResearchPaper> getPapers() {
@@ -75,9 +95,6 @@ public class Teacher extends Employee implements Researcher {
 	}
 
 	public void printPapers(Comparator<ResearchPaper> c) {
-		papers.sort(c);
-		for(ResearchPaper p : papers) {
-			System.out.println(p);
-		}
+		papers.stream().sorted(c).forEach((p) -> System.out.println("Title: " + p.getTitle()));
 	}
 }
