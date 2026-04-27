@@ -31,3 +31,65 @@ Technology
 - Language: Java 17
 - Storage: Java Object Serialization (.ser file)
 - Build: plain javac — no build tool required
+
+
+
+Project Structure:
+oop-project/
+
+core/
+	University
+	Log
+	ConsoleUIController
+	AuthService
+	DataLoader
+users/
+	User
+	Admin
+	Employee
+	Manager
+	Student
+	Teacher
+research/
+	Researcher
+	ResearchProject
+	ResearchPaper
+academic/
+	Course
+	Enrollment
+	Lesson
+	Mark
+	News
+	Report
+	Request
+	StudyMaterial
+enums/
+	LessonType
+	ManagerType
+	ReportType
+	RequestStatus
+	RequestType
+	TeacherType
+exceptions/
+	CreditLimitExceededException
+	LowHIndexException
+	NonResearcherException
+
+
+
+
+
+
+
+
+
+What to do Next:
+Add user Schedule System.
+Better DataLoader.
+The program has a bug, every time you start it new null users are created in users.txt.
+File System between users and teachers.
+Implementing Exceptions and boundery values.
+News System.
+
+
+
