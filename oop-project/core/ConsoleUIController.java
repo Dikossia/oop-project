@@ -15,8 +15,8 @@ public class ConsoleUIController {
     private User currentUser;
 
     public void start() {
-        uni.courses.addAll(DataLoader.loadCourses("courses.txt"));
-	uni.users.addAll(DataLoader.loadUsers("users.txt"));
+        uni.courses.addAll(DataLoader.loadCourses("./data/courses.txt"));
+	uni.users.addAll(DataLoader.loadUsers("./data/users.txt"));
         DataLoader.loadSchedule();
         seedUsers();
 
@@ -40,7 +40,7 @@ public class ConsoleUIController {
         if (ch == 0) {
             DataLoader.saveCourses(uni.courses);
             DataLoader.saveSchedule();
-	    DataLoader.saveUsers(uni.users, "users.txt");
+	    DataLoader.saveUsers(uni.users, "./data/users.txt");
             System.exit(0);
         }
 
@@ -201,6 +201,8 @@ public class ConsoleUIController {
     }
 
     // ================= SEED USERS =================
+	private void seedUsers(){};
+/*
     private void seedUsers() {
         Admin a = new Admin(); a.id = 1; a.username = "admin"; a.password = "123";
         Student s = new Student(2,"alice","111","a@mail.com",3.5,2,0,0);
@@ -212,4 +214,5 @@ public class ConsoleUIController {
         uni.users.add(t);
         uni.users.add(m);
     }
+*/
 }

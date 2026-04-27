@@ -11,9 +11,9 @@ import users.*;
 
 public class DataLoader {
 
-    private static final String COURSE_FILE = "courses.txt";
-    private static final String SCHEDULE_FILE = "schedule.txt";
-    private static final String USERS_FILE = "users.txt";
+    private static final String COURSE_FILE = "./data/courses.txt";
+    private static final String SCHEDULE_FILE = "./data/schedule.txt";
+    private static final String USERS_FILE = "./data/users.txt";
 
     public static List<Course> loadCourses(String fileName) {
 
