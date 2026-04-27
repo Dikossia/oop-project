@@ -95,6 +95,8 @@ public class Teacher extends Employee implements Researcher {
 	}
 
 	public void printPapers(Comparator<ResearchPaper> c) {
-		papers.stream().sorted(c).forEach((p) -> System.out.println("Title: " + p.getTitle()));
+		papers.stream()
+				.sorted(c)
+				.forEach((p) -> System.out.println("Title: " + p.getTitle()));
 	}
 }
