@@ -1,0 +1,12 @@
+i was thinking about the system where the files teachers will be adding will appear here.
+
+
+Structure:
+'courseName1'/
+	'teacher1'
+	'teacher2'
+	...
+'courseName2'/
+	'teacher1'
+	...
+...

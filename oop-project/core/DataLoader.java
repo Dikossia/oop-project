@@ -11,304 +11,305 @@ import users.*;
 
 public class DataLoader {
 
-    private static final String COURSE_FILE = "./data/courses.txt";
-    private static final String SCHEDULE_FILE = "./data/schedule.txt";
-    private static final String USERS_FILE = "./data/users.txt";
+	private static final String COURSE_FILE = "./data/courses.txt";
+	private static final String SCHEDULE_FILE = "./data/schedule.txt";
+	private static final String USERS_FILE = "./data/users.txt";
 
-    public static List<Course> loadCourses(String fileName) {
+	public static List<Course> loadCourses(String fileName) {
 
-        List<Course> courses = new ArrayList<Course>();
+		List<Course> courses = new ArrayList<Course>();
 
-        try {
+		try {
 
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
 
-            String line;
+			String line;
 
-            while((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {
 
-                String[] parts = line.split(",");
+				String[] parts = line.split(",");
 
-                if(parts.length != 3) continue;
+				if (parts.length != 3) continue;
 
-                String name = parts[0].trim();
-                String code = parts[1].trim();
-                int credits = Integer.parseInt(parts[2].trim());
+				String name = parts[0].trim();
+				String code = parts[1].trim();
+				int credits = Integer.parseInt(parts[2].trim());
 
-                Course c = new Course(name, code, credits);
-                c.isOpen = true;
+				Course c = new Course(name, code, credits);
+				c.isOpen = true;
 
-                courses.add(c);
-            }
+				courses.add(c);
+			}
 
-            br.close();
+			br.close();
 
-        } catch(Exception e) {
-            System.out.println("Cannot load courses");
-        }
+		} catch (Exception e) {
+			System.out.println("Cannot load courses");
+		}
 
-        return courses;
-    }
+		return courses;
+	}
 
+	public static void saveCourses(List<Course> courses) {
 
-    public static void saveCourses(List<Course> courses) {
+		try {
 
-        try {
+			PrintWriter pw = new PrintWriter(new FileWriter(COURSE_FILE));
 
-            PrintWriter pw = new PrintWriter(new FileWriter(COURSE_FILE));
+			for (Course c : courses) {
+				pw.println(c.name + "," + c.code + "," + c.credits);
+			}
 
-            for(Course c : courses) {
-                pw.println(c.name + "," + c.code + "," + c.credits);
-            }
+			pw.close();
 
-            pw.close();
+		} catch (Exception e) {
+			System.out.println("Cannot save courses");
+		}
+	}
 
-        } catch(Exception e) {
-            System.out.println("Cannot save courses");
-        }
-    }
+	public static void loadSchedule() {
 
+		University uni = University.getInstance();
 
-    public static void loadSchedule() {
+		try {
 
-        University uni = University.getInstance();
+			BufferedReader br = new BufferedReader(new FileReader(SCHEDULE_FILE));
 
-        try {
+			String line;
 
-            BufferedReader br = new BufferedReader(new FileReader(SCHEDULE_FILE));
+			while ((line = br.readLine()) != null) {
 
-            String line;
+				line = line.trim();
 
-            while((line = br.readLine()) != null) {
+				if (line.length() == 0) continue;
 
-                line = line.trim();
+				int value = Integer.parseInt(line);
 
-                if(line.length() == 0) continue;
+				int year = (value >> 26) & 63;
+				int month = (value >> 22) & 15;
+				int day = (value >> 17) & 31;
+				int hour = (value >> 12) & 31;
+				int minute = (value >> 6) & 63;
+				int courseId = (value >> 3) & 7;
+				int typeId = value & 7;
 
-                int value = Integer.parseInt(line);
+				if (courseId >= uni.courses.size()) continue;
 
-                int year      = (value >> 26) & 63;
-                int month     = (value >> 22) & 15;
-                int day       = (value >> 17) & 31;
-                int hour      = (value >> 12) & 31;
-                int minute    = (value >> 6)  & 63;
-                int courseId  = (value >> 3)  & 7;
-                int typeId    = value & 7;
+				Course course = uni.courses.get(courseId);
 
-                if(courseId >= uni.courses.size()) continue;
+				Calendar cal = Calendar.getInstance();
 
-                Course course = uni.courses.get(courseId);
+				cal.set(
+					2000 + year,
+					month - 1,
+					day,
+					hour,
+					minute,
+					0
+				);
 
-                Calendar cal = Calendar.getInstance();
+				LessonType type = LessonType.LECTURE;
 
-                cal.set(
-                    2000 + year,
-                    month - 1,
-                    day,
-                    hour,
-                    minute,
-                    0
-                );
+				if (typeId == 1) {
+					type = LessonType.PRACTICE;
+				}
 
-                LessonType type = LessonType.LECTURE;
+				Lesson lesson =
+					new Lesson(
+						cal.getTime(),
+						"AUTO",
+						type
+					);
 
-                if(typeId == 1) {
-                    type = LessonType.PRACTICE;
-                }
+				course.addLesson(lesson);
+			}
 
-                Lesson lesson =
-                    new Lesson(
-                        cal.getTime(),
-                        "AUTO",
-                        type
-                    );
+			br.close();
 
-                course.addLesson(lesson);
-            }
+		} catch (Exception e) {
+			System.out.println("No schedule file found");
+		}
+	}
 
-            br.close();
+	public static void saveSchedule() {
 
-        } catch(Exception e) {
-            System.out.println("No schedule file found");
-        }
-    }
+		University uni = University.getInstance();
 
+		try {
 
-    public static void saveSchedule() {
+			PrintWriter pw =
+				new PrintWriter(
+					new FileWriter(SCHEDULE_FILE)
+				);
 
-        University uni = University.getInstance();
+			for (int i = 0; i < uni.courses.size(); i++) {
 
-        try {
+				Course c = uni.courses.get(i);
 
-            PrintWriter pw =
-                new PrintWriter(
-                    new FileWriter(SCHEDULE_FILE)
-                );
+				for (Lesson lesson : c.lessons) {
 
-            for(int i = 0; i < uni.courses.size(); i++) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(lesson.time);
 
-                Course c = uni.courses.get(i);
+					int year =
+						cal.get(Calendar.YEAR) - 2000;
 
-                for(Lesson lesson : c.lessons) {
+					int month =
+						cal.get(Calendar.MONTH) + 1;
 
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(lesson.time);
+					int day =
+						cal.get(Calendar.DAY_OF_MONTH);
 
-                    int year =
-                        cal.get(Calendar.YEAR) - 2000;
+					int hour =
+						cal.get(Calendar.HOUR_OF_DAY);
 
-                    int month =
-                        cal.get(Calendar.MONTH) + 1;
+					int minute =
+						cal.get(Calendar.MINUTE);
 
-                    int day =
-                        cal.get(Calendar.DAY_OF_MONTH);
+					int type = 0;
 
-                    int hour =
-                        cal.get(Calendar.HOUR_OF_DAY);
+					if (lesson.type ==
+						LessonType.PRACTICE)
+					{
+						type = 1;
+					}
 
-                    int minute =
-                        cal.get(Calendar.MINUTE);
+					int value = 0;
 
-                    int type = 0;
+					value |= (year << 26);
+					value |= (month << 22);
+					value |= (day << 17);
+					value |= (hour << 12);
+					value |= (minute << 6);
+					value |= (i << 3);
+					value |= type;
 
-                    if(lesson.type ==
-                        LessonType.PRACTICE)
-                    {
-                        type = 1;
-                    }
+					pw.println(value);
+				}
+			}
 
-                    int value = 0;
+			pw.close();
 
-                    value |= (year   << 26);
-                    value |= (month  << 22);
-                    value |= (day    << 17);
-                    value |= (hour   << 12);
-                    value |= (minute << 6);
-                    value |= (i      << 3);
-                    value |= type;
-
-                    pw.println(value);
-                }
-            }
-
-            pw.close();
-
-        } catch(Exception e) {
-            System.out.println("Cannot save schedule");
-        }
-    }
+		} catch (Exception e) {
+			System.out.println("Cannot save schedule");
+		}
+	}
 
 	public static List<User> loadUsers(String file) {
 
-	    List<User> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 
-	    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-		String line;
+			String line;
 
-		while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {
 
-		    String[] p = line.split("\\|");
+				String[] p = line.split("\\|");
 
-		    switch (p[0]) {
+				switch (p[0]) {
 
-			case "ADMIN":
-			    Admin a = new Admin();
-			    a.id = Integer.parseInt(p[1]);
-			    a.username = p[2];
-			    a.password = p[3];
-			    a.email = p[4];
-			    users.add(a);
-			    break;
+					case "ADMIN":
+						Admin a = new Admin();
+						a.id = Integer.parseInt(p[1]);
+						a.username = p[2];
+						a.password = p[3];
+						a.email = p[4];
+						users.add(a);
+						break;
 
-			case "STUDENT":
-			    Student s = new Student(
-				Integer.parseInt(p[1]),
-				p[2],
-				p[3],
-				p[4],
-				Double.parseDouble(p[5]),
-				Integer.parseInt(p[6]),
-				Integer.parseInt(p[7]),
-				Integer.parseInt(p[8])
-			    );
-			    users.add(s);
-			    break;
+					case "STUDENT":
+						Student s = new Student(
+							Integer.parseInt(p[1]),
+							p[2],
+							p[3],
+							p[4],
+							Double.parseDouble(p[5]),
+							Integer.parseInt(p[6]),
+							Integer.parseInt(p[7]),
+							Integer.parseInt(p[8])
+						);
+						users.add(s);
+						break;
 
-			case "TEACHER":
-			    Teacher t = new Teacher();
-			    t.id = Integer.parseInt(p[1]);
-			    t.username = p[2];
-			    t.password = p[3];
-			    t.email = p[4];
-			    t.title = enums.TeacherType.valueOf(p[5]);
-			    users.add(t);
-			    break;
+					case "TEACHER":
+						Teacher t = new Teacher();
+						t.id = Integer.parseInt(p[1]);
+						t.username = p[2];
+						t.password = p[3];
+						t.email = p[4];
+						t.title = enums.TeacherType.valueOf(p[5]);
+						users.add(t);
+						break;
 
-			case "MANAGER":
-			    Manager m = new Manager();
-			    m.id = Integer.parseInt(p[1]);
-			    m.username = p[2];
-			    m.password = p[3];
-			    m.email = p[4];
-			    m.type = enums.ManagerType.valueOf(p[5]);
-			    users.add(m);
-			    break;
-		    }
+					case "MANAGER":
+						Manager m = new Manager();
+						m.id = Integer.parseInt(p[1]);
+						m.username = p[2];
+						m.password = p[3];
+						m.email = p[4];
+						m.type = enums.ManagerType.valueOf(p[5]);
+						users.add(m);
+						break;
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Cannot load users");
 		}
 
-	    } catch (Exception e) {
-		System.out.println("Cannot load users");
-	    }
-
-	    return users;
+		return users;
 	}
 
 	public static void saveUsers(List<User> users, String file) {
 
-	    try (PrintWriter pw = new PrintWriter(new FileWriter(file))) {
+		try (PrintWriter pw = new PrintWriter(new FileWriter(file))) {
 
-		for (User u : users) {
+			for (User u : users) {
 
-		    if (u instanceof Admin) {
-			pw.println("ADMIN|" + u.id + "|" + u.username + "|" + u.password + "|" + u.email);
-		    }
+				if (u instanceof Admin) {
+					pw.println("ADMIN|" + u.id + "|" + u.username + "|" + u.password + "|" + u.email);
+				}
 
-		    else if (u instanceof Student s) {
-			pw.println("STUDENT|" + s.id + "|" + s.username + "|" + s.password + "|" +
-				s.email + "|" + s.gpa + "|" + s.year + "|" + s.credits + "|" + s.failedCourses);
-		    }
+				else if (u instanceof Student s) {
+					pw.println("STUDENT|" + s.id + "|" + s.username + "|" + s.password + "|" +
+						s.email + "|" + s.gpa + "|" + s.year + "|" + s.credits + "|" + s.failedCourses);
+				}
 
-		    else if (u instanceof Teacher t) {
-			pw.println("TEACHER|" + t.id + "|" + t.username + "|" + t.password + "|" +
-				t.email + "|" + t.title);
-		    }
+				else if (u instanceof Teacher t) {
+					pw.println("TEACHER|" + t.id + "|" + t.username + "|" + t.password + "|" +
+						t.email + "|" + t.title);
+				}
 
-		    else if (u instanceof Manager m) {
-			pw.println("MANAGER|" + m.id + "|" + m.username + "|" + m.password + "|" +
-				m.email + "|" + m.type);
-		    }
+				else if (u instanceof Manager m) {
+					pw.println("MANAGER|" + m.id + "|" + m.username + "|" + m.password + "|" +
+						m.email + "|" + m.type);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Cannot save users");
 		}
-
-	    } catch (Exception e) {
-		System.out.println("Cannot save users");
-	    }
 	}
 
+	public static void saveLogs(List<Log> logs, String file){
 
-    public static void assignTeacherToAll(Teacher t) {
 
-        University uni = University.getInstance();
+	}
 
-        for(Course c : uni.courses) {
+	public static void assignTeacherToAll(Teacher t) {
 
-            if(!c.instructors.contains(t)) {
-                c.addInstructor(t);
-            }
+		University uni = University.getInstance();
 
-            if(!t.courses.contains(c)) {
-                t.courses.add(c);
-            }
-        }
-    }
+		for (Course c : uni.courses) {
+
+			if (!c.instructors.contains(t)) {
+				c.addInstructor(t);
+			}
+
+			if (!t.courses.contains(c)) {
+				t.courses.add(c);
+			}
+		}
+	}
 }

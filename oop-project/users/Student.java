@@ -9,6 +9,7 @@ import core.University;
 import exceptions.CreditLimitExceededException;
 
 public class Student extends User {
+	public static final int MAX_CREDITS = 21;
 	public double gpa;
 	public int year;
 	public int credits;
@@ -17,7 +18,8 @@ public class Student extends User {
 	public Student() {
 	}
 
-	public Student(int id, String username, String password, String email, double gpa, int year, int credits, int failedCourses) {
+	public Student(int id, String username, String password, String email,
+			double gpa, int year, int credits, int failedCourses) {
 		super(id, username, password, email);
 		this.gpa = gpa;
 		this.year = year;
@@ -26,7 +28,7 @@ public class Student extends User {
 	}
 
 	public void registerCourse(Course course) throws CreditLimitExceededException {
-		if(credits + course.credits > 21) {
+		if(credits + course.credits > MAX_CREDITS) {
 			throw new CreditLimitExceededException("Credit limit exceeded");
 		}
 		credits += course.credits;
