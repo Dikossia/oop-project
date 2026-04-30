@@ -1,0 +1,2 @@
+2|Calculus,Lee,D101|Java,White,E202
+100|Discrete Math,Dr_Smith,F303|OOP,Brown,C303|Physics,John,B202

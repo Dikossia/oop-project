@@ -12,12 +12,14 @@ import academic.StudyMaterial;
 import research.ResearchPaper;
 import research.Researcher;
 import enums.TeacherType;
+import enums.UserType;
 
 public class Teacher extends Employee implements Researcher {
 	public TeacherType title;
 	public List<Course> courses;
 	public List<ResearchPaper> papers;
 	private int hIndex;
+	public final static UserType userType = UserType.Teacher;
 
 	public Teacher() {
 		courses = new ArrayList<Course>();

@@ -1,0 +1,14 @@
+./academic/Schedule.java:11: error: cannot find symbol
+	public List<ScheduleEntry> scheduleEntries;
+	       ^
+  symbol:   class List
+  location: class Schedule
+core/DataLoader.java:91: error: cannot find symbol
+				Student s = uni.findUserById(sId);
+				               ^
+  symbol:   method findUserById(int)
+  location: variable uni of type University
+./users/Student.java:52: error: non-static variable scheduleEntries cannot be referenced from a static context
+			for(ScheduleEntry entry : Schedule.scheduleEntries){
+			                                  ^
+3 errors

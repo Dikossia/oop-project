@@ -2,6 +2,5 @@ ADMIN|1|admin|123|admin@uni.kz
 TEACHER|3|bob|222|bob@uni.kz|PROFESSOR
 TEACHER|7|dr_smith|444|smith@uni.kz|SENIOR_LECTOR
 MANAGER|4|manager|333|manager@uni.kz|OR_MANAGER
-STUDENT|2|alice|111|a@mail.com|3.5|2|3|0
 STUDENT|100|yruit|1234|yruit@gmail.com|0.0|1|0|0
 STUDENT|2|alice|111|a@mail.com|3.5|2|0|0

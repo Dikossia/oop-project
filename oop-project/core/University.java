@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import users.User;
+import users.Student;
 import academic.Course;
 import research.ResearchProject;
 
@@ -34,5 +35,14 @@ public class University {
 		for(Log l : logs) {
 			System.out.println(l);
 		}
+	}
+
+	public Student findStudentById(int sId){
+		for(User user : users){
+			if (user instanceof Student && user.id == sId){
+				return (Student) user;
+			}
+		}
+		return null;
 	}
 }

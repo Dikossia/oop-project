@@ -8,12 +8,16 @@ import academic.Lesson;
 import core.University;
 import enums.LessonType;
 import users.*;
+import academic.Schedule;
+import academic.ScheduleEntry;
+import academic.Room;
 
 public class DataLoader {
 
 	private static final String COURSE_FILE = "./data/courses.txt";
 	private static final String SCHEDULE_FILE = "./data/schedule.txt";
 	private static final String USERS_FILE = "./data/users.txt";
+	private static final String SCHEDULE_FILE_2 = "./data/schedule2.txt";
 
 	public static List<Course> loadCourses(String fileName) {
 
@@ -65,6 +69,50 @@ public class DataLoader {
 		} catch (Exception e) {
 			System.out.println("Cannot save courses");
 		}
+	}
+
+	public static void loadSchedule2(){
+		University uni = University.getInstance();
+		//i want so that each Student will get inited its own schedule at this step)
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(SCHEDULE_FILE_2));
+
+			String line;
+
+			while ((line = br.readLine()) != null){
+
+				line.trim();
+				if(line.isEmpty()) continue;
+
+				String[] parts = line.split("\\|");
+				if(parts.length % 3 != 1)continue;
+
+				int sId = Integer.parseInt(parts[0].trim());
+				Student s = uni.findStudentById(sId);
+				if(s == null)continue;
+				if(s.schedule == null){
+					s.schedule = new Schedule();
+				}
+
+				for(int i = 1;  i < parts.length; i ++){
+					String[] data = parts[i].split(",");
+					String courseName = data[0].trim();
+					String teacherName = data[1].trim();
+					Room room = new Room(data[2].trim());
+
+					ScheduleEntry entry = new ScheduleEntry(
+						courseName, teacherName, room);
+
+					s.schedule.addScheduleEntry(entry);
+				}
+			}
+			br.close();
+
+		} catch (Exception e) {
+			System.out.println("No schedule file found");
+		}
+
+
 	}
 
 	public static void loadSchedule() {
@@ -268,22 +316,25 @@ public class DataLoader {
 			for (User u : users) {
 
 				if (u instanceof Admin) {
-					pw.println("ADMIN|" + u.id + "|" + u.username + "|" + u.password + "|" + u.email);
+					pw.println("ADMIN|" + u.id + "|" + u.username + "|" +
+								u.password + "|" + u.email);
 				}
 
 				else if (u instanceof Student s) {
-					pw.println("STUDENT|" + s.id + "|" + s.username + "|" + s.password + "|" +
-						s.email + "|" + s.gpa + "|" + s.year + "|" + s.credits + "|" + s.failedCourses);
+					pw.println("STUDENT|" + s.id + "|" + s.username + "|" +
+								s.password + "|" + s.email + "|" + s.gpa +
+								"|" + s.year + "|" + s.credits + "|" +
+								s.failedCourses);
 				}
 
 				else if (u instanceof Teacher t) {
-					pw.println("TEACHER|" + t.id + "|" + t.username + "|" + t.password + "|" +
-						t.email + "|" + t.title);
+					pw.println("TEACHER|" + t.id + "|" + t.username + "|" +
+								t.password + "|" + t.email + "|" + t.title);
 				}
 
 				else if (u instanceof Manager m) {
-					pw.println("MANAGER|" + m.id + "|" + m.username + "|" + m.password + "|" +
-						m.email + "|" + m.type);
+					pw.println("MANAGER|" + m.id + "|" + m.username + "|" +
+								m.password + "|" + m.email + "|" + m.type);
 				}
 			}
 

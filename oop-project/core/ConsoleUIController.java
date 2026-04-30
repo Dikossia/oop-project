@@ -17,7 +17,7 @@ public class ConsoleUIController {
 	public void start() {
 		uni.courses.addAll(DataLoader.loadCourses("./data/courses.txt"));
 		uni.users.addAll(DataLoader.loadUsers("./data/users.txt"));
-		DataLoader.loadSchedule();
+		DataLoader.loadSchedule2();
 		seedUsers();
 
 		while (true) {
