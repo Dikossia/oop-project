@@ -19,4 +19,8 @@ public class Schedule {
 		scheduleEntries.add(entry);
 	}
 
+	public void removeScheduleEntry(ScheduleEntry entry){
+		scheduleEntries.remove(entry);
+	}
+
 }

@@ -114,6 +114,37 @@ public class DataLoader {
 
 
 	}
+	public static void saveSchedule2() {
+		University uni = University.getInstance();
+		try {
+			PrintWriter pw = new PrintWriter(
+						new FileWriter(SCHEDULE_FILE_2));
+			for(User user : uni.users){
+				if(!(user instanceof Student)) continue;
+				Student s = (Student) user;
+
+				pw.print(s.id);
+
+				for(ScheduleEntry entry : s.schedule.scheduleEntries){
+
+					pw.print("|");
+					pw.print(entry.courseName + ",");
+					pw.print(entry.teacherName + ",");
+					pw.print(entry.room);
+
+				}
+				pw.println();
+
+			}
+			pw.close();
+
+
+		} catch (Exception e) {
+			System.out.println("couldn't save the schedule");
+		}
+
+
+	}
 
 	public static void loadSchedule() {
 
@@ -185,10 +216,8 @@ public class DataLoader {
 
 		try {
 
-			PrintWriter pw =
-				new PrintWriter(
-					new FileWriter(SCHEDULE_FILE)
-				);
+			PrintWriter pw = new PrintWriter(
+						new FileWriter(SCHEDULE_FILE));
 
 			for (int i = 0; i < uni.courses.size(); i++) {
 
@@ -241,7 +270,7 @@ public class DataLoader {
 		} catch (Exception e) {
 			System.out.println("Cannot save schedule");
 		}
-	}
+		}
 
 	public static List<User> loadUsers(String file) {
 
