@@ -34,46 +34,58 @@ Technology
 
 
 ## Project Structure:
-
-oop-project/<br>
-core/<br>
-	University<br>
-	Log<br>
-	ConsoleUIController<br>
-	AuthService<br>
-	DataLoader<br>
-users/<br>
-	User<br>
-	Admin<br>
-	Employee<br>
-	Manager<br>
-	Student<br>
-	Teacher<br>
-research/<br>
-	Researcher<br>
-	ResearchProject<br>
-	ResearchPaper<br>
-academic/<br>
-	Course<br>
-	Enrollment<br>
-	Lesson<br>
-	Mark<br>
-	News<br>
-	Report<br>
-	Request<br>
-	StudyMaterial<br>
-enums/<br>
-	LessonType<br>
-	ManagerType<br>
-	ReportType<br>
-	RequestStatus<br>
-	RequestType<br>
-	TeacherType<br>
-exceptions/<br>
-	CreditLimitExceededException<br>
-	LowHIndexException<br>
- 	NonResearcherException<br>
-
+```bash
+oop-project/
+core/
+	University
+	Log
+	ConsoleUIController
+	AuthService
+	DataLoader
+users/
+	User
+	Admin
+	Employee
+	Manager
+	Student
+	Teacher
+research/
+	Researcher
+	ResearchProject
+	ResearchPaper
+academic/
+	Course
+	Enrollment
+	Lesson
+	Mark
+	News
+	Report
+	Request
+	Room
+	StudyMaterial
+	Schedule
+	ScheduleEntry
+	TimeSlot
+enums/
+	LessonType
+	ManagerType
+	ReportType
+	RequestStatus
+	RequestType
+	TeacherType
+	DaysOfWeek
+	RoomType
+	UserType
+exceptions/
+	CreditLimitExceededException
+	LowHIndexException
+ 	NonResearcherException
+data/
+	log
+	schedule2
+	schedule
+	users
+```
 
 
 
