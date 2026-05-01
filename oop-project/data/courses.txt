@@ -8,3 +8,4 @@ Software Engineering,CS2007,3
 Computer Networks,CS2008,4
 AI Fundamentals,CS2009,5
 Web Development,CS2010,3
+Enumerative Combinatorics,MAT1209,3

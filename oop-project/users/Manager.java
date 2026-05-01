@@ -5,6 +5,7 @@ import academic.Enrollment;
 import academic.News;
 import academic.Report;
 import enums.ManagerType;
+import core.University;
 
 public class Manager extends Employee {
 	public ManagerType type;
@@ -31,6 +32,8 @@ public class Manager extends Employee {
 	}
 
 	public void createCourse(Course c) {
+		University uni = University.getInstance();
+			uni.courses.add(c);
 		System.out.println("Course created: " + c.name);
 	}
 

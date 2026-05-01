@@ -189,11 +189,13 @@ public class ConsoleUIController {
 
 	// ================= MANAGER =================
 	private void managerMenu() {
+		Manager m = (Manager) currentUser;
 		while (true) {
 			System.out.println("\n-- MANAGER MENU --");
 			System.out.println("1. Open Courses");
 			System.out.println("2. Show Courses");
 			System.out.println("3. Logout");
+			System.out.println("4. Create Course");
 
 			int ch = readInt();
 
@@ -210,6 +212,21 @@ public class ConsoleUIController {
 				for (Course c : uni.courses)
 					System.out.println(c.name + " " + c.code);
 			}
+
+			if (ch == 4) {
+				System.out.println("Course Name: ");
+				String cName = sc.nextLine();
+				System.out.println("Course Code: ");
+				String cCode = sc.nextLine();
+				System.out.println("Course Credits: ");
+				int cCredits = sc.nextInt();
+
+				Course c = new Course(cName, cCode, cCredits);
+				m.createCourse(c);
+			}
+
+
+
 		}
 	}
 
