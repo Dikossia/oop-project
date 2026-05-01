@@ -11,6 +11,9 @@ import users.*;
 import academic.Schedule;
 import academic.ScheduleEntry;
 import academic.Room;
+import academic.Request;
+import enums.RequestType;
+import enums.RequestStatus;
 
 public class DataLoader {
 
@@ -18,6 +21,8 @@ public class DataLoader {
 	private static final String SCHEDULE_FILE = "./data/schedule.txt";
 	private static final String USERS_FILE = "./data/users.txt";
 	private static final String SCHEDULE_FILE_2 = "./data/schedule2.txt";
+	private static final String REQUEST_FILE = "./data/request.txt";
+	private static final String NEWS_FILE = "./data/news.txt";
 
 	public static List<Course> loadCourses(String fileName) {
 
@@ -114,6 +119,7 @@ public class DataLoader {
 
 
 	}
+
 	public static void saveSchedule2() {
 		University uni = University.getInstance();
 		try {
@@ -272,6 +278,62 @@ public class DataLoader {
 		}
 		}
 
+	public static void loadRequests(){
+		University uni = University.getInstance();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(REQUEST_FILE));
+			String line;
+			while((line = br.readLine()) != null){
+				line.trim();
+				if(line.isEmpty()) continue;
+
+				String[] parts = line.split("\\|");
+				if(parts.length != 4) continue;
+
+				Manager m = new Manager();
+				int id = Integer.parseInt(parts[0].trim());
+				RequestType type = RequestType.valueOf(parts[1].trim());
+				RequestStatus status = RequestStatus.valueOf(parts[2].trim());
+				String description = parts[3].trim();
+
+				Request r = new Request(id, type, status, description);
+				m.addRequest(r);
+
+			}
+
+
+
+		} catch(Exception e) {
+			System.out.println("Could not load Requests");
+		}
+
+	}
+
+	public static void saveRequests() {
+		University uni = University.getInstance();
+		try {
+			Manager m = new Manager();
+			PrintWriter pw = new PrintWriter(
+						new FileWriter(REQUEST_FILE));
+			for(Request r : m.requests){
+				pw.print(r.id + " | " );
+				pw.print(r.type + " | ");
+				pw.print(r.status + " | ");
+				pw.print(r.description + " | ");
+
+				pw.println();
+			}
+
+			pw.close();
+
+		} catch(Exception e) {
+			System.out.println("Couldn't save Requests");
+
+		}
+	}
+/*
+*/
 	public static List<User> loadUsers(String file) {
 
 		List<User> users = new ArrayList<>();

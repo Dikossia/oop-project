@@ -5,8 +5,10 @@ import java.util.List;
 
 import users.User;
 import users.Student;
+import users.Employee;
 import academic.Course;
 import research.ResearchProject;
+import academic.News;
 
 public class University {
 	private static University instance = new University();
@@ -41,6 +43,15 @@ public class University {
 		for(User user : users){
 			if (user instanceof Student && user.id == sId){
 				return (Student) user;
+			}
+		}
+		return null;
+	}
+
+	public Employee findEmployeeById(int eId){
+		for(User user: users){
+			if (user instanceof Employee && user.id == eId){
+				return (Employee) user;
 			}
 		}
 		return null;

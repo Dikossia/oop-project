@@ -86,7 +86,7 @@ public class ConsoleUIController {
 			System.out.println("3. Remove User");
 			System.out.println("4. Show Logs");
 			System.out.println("5. Logout");
-
+			System.out.println("6. Send Request");
 			int ch = readInt();
 
 			if (ch == 5) {
@@ -111,6 +111,11 @@ public class ConsoleUIController {
 			if (ch == 4) {
 				uni.showLogs();
 			}
+			if (ch == 6) {
+				admin.addRequest();
+			}
+
+
 		}
 	}
 
@@ -167,12 +172,17 @@ public class ConsoleUIController {
 			System.out.println("1. View Courses");
 			System.out.println("2. Add Lesson");
 			System.out.println("3. Logout");
+			System.out.println("6. Send Request");
 
 			int ch = readInt();
 
 			if (ch == 3) {
 				currentUser = null;
 				return;
+			}
+
+			if (ch == 6) {
+				t.addRequest();
 			}
 
 			if (ch == 1) t.viewStudents();
@@ -196,6 +206,9 @@ public class ConsoleUIController {
 			System.out.println("2. Show Courses");
 			System.out.println("3. Logout");
 			System.out.println("4. Create Course");
+			System.out.println("5. Add News");
+			System.out.println("6. Send Request");
+			System.out.println("7. Show Requests");
 
 			int ch = readInt();
 
@@ -223,6 +236,14 @@ public class ConsoleUIController {
 
 				Course c = new Course(cName, cCode, cCredits);
 				m.createCourse(c);
+			}
+
+			if (ch == 6) {
+				m.addRequest();
+			}
+
+			if (ch == 7) {
+				m.showRequests();
 			}
 
 
