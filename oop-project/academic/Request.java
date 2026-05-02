@@ -3,18 +3,24 @@ package academic;
 import users.Employee;
 import enums.RequestStatus;
 import enums.RequestType;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Request {
-	public int id;
+	private static AtomicLong requestIdCounter = new AtomicLong(0);
+	public int senderId;
 	public RequestType type;
 	public RequestStatus status;
 	public String description;
+	public long requestId;
 
-	public Request() {}
+	public Request() {
+		this.requestId = requestIdCounter.getAndIncrement();
+		}
 
 	public Request (int id, RequestType type,
 			RequestStatus status, String description) {
-		this.id = id;
+		this.requestId = requestIdCounter.getAndIncrement();
+		this.senderId = id;
 		this.type = type;
 		this.status = status;
 		this.description = description;

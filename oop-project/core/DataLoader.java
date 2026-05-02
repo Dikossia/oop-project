@@ -76,11 +76,11 @@ public class DataLoader {
 		}
 	}
 
-	public static void loadSchedule2(){
+	public static void loadSchedule2(String fileName){
 		University uni = University.getInstance();
 		//i want so that each Student will get inited its own schedule at this step)
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(SCHEDULE_FILE_2));
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
 
 			String line;
 
@@ -120,11 +120,11 @@ public class DataLoader {
 
 	}
 
-	public static void saveSchedule2() {
+	public static void saveSchedule2(String fileName) {
 		University uni = University.getInstance();
 		try {
 			PrintWriter pw = new PrintWriter(
-						new FileWriter(SCHEDULE_FILE_2));
+						new FileWriter(fileName));
 			for(User user : uni.users){
 				if(!(user instanceof Student)) continue;
 				Student s = (Student) user;
@@ -284,20 +284,19 @@ public class DataLoader {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(REQUEST_FILE));
 			String line;
+			Manager m = new Manager();
 			while((line = br.readLine()) != null){
 				line.trim();
 				if(line.isEmpty()) continue;
 
 				String[] parts = line.split("\\|");
-				if(parts.length != 4) continue;
+				if(parts.length != 5) continue;
+				int senderId = Integer.parseInt(parts[1].trim());
+				RequestType type = RequestType.valueOf(parts[2].trim());
+				RequestStatus status = RequestStatus.valueOf(parts[3].trim());
+				String description = parts[4].trim();
 
-				Manager m = new Manager();
-				int id = Integer.parseInt(parts[0].trim());
-				RequestType type = RequestType.valueOf(parts[1].trim());
-				RequestStatus status = RequestStatus.valueOf(parts[2].trim());
-				String description = parts[3].trim();
-
-				Request r = new Request(id, type, status, description);
+				Request r = new Request(senderId, type, status, description);
 				m.addRequest(r);
 
 			}
@@ -313,18 +312,17 @@ public class DataLoader {
 	public static void saveRequests() {
 		University uni = University.getInstance();
 		try {
-			Manager m = new Manager();
 			PrintWriter pw = new PrintWriter(
 						new FileWriter(REQUEST_FILE));
-			for(Request r : m.requests){
-				pw.print(r.id + " | " );
+			for(Request r : Employee.getRequestInstance()){
+				pw.print(r.requestId + " | ");
+				pw.print(r.senderId + " | " );
 				pw.print(r.type + " | ");
 				pw.print(r.status + " | ");
-				pw.print(r.description + " | ");
+				pw.print(r.description);
 
 				pw.println();
 			}
-
 			pw.close();
 
 		} catch(Exception e) {

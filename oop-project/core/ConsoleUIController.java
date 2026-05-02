@@ -17,7 +17,8 @@ public class ConsoleUIController {
 	public void start() {
 		uni.courses.addAll(DataLoader.loadCourses("./data/courses.txt"));
 		uni.users.addAll(DataLoader.loadUsers("./data/users.txt"));
-		DataLoader.loadSchedule2();
+		DataLoader.loadSchedule2("./data/schedule2.txt");
+		DataLoader.loadRequests();
 		seedUsers();
 
 		while (true) {
@@ -40,7 +41,8 @@ public class ConsoleUIController {
 		if (ch == 0) {
 
 			DataLoader.saveCourses(uni.courses);
-			DataLoader.saveSchedule();
+			DataLoader.saveSchedule2("./data/schedule2.txt");
+			DataLoader.saveRequests();
 			DataLoader.saveUsers(uni.users, "./data/users.txt");
 			System.exit(0);
 		}
@@ -209,6 +211,10 @@ public class ConsoleUIController {
 			System.out.println("5. Add News");
 			System.out.println("6. Send Request");
 			System.out.println("7. Show Requests");
+			System.out.println("8. Remove Request");
+			System.out.println("9. Review Request");
+			System.out.println("10. Finished Requests");
+			System.out.println();
 
 			int ch = readInt();
 
@@ -246,10 +252,33 @@ public class ConsoleUIController {
 				m.showRequests();
 			}
 
+			if (ch == 8) {
+				System.out.println("Enter Request ID");
+				long rId = sc.nextInt();
+				m.removeRequest(rId);
+			}
+
+			if (ch == 9) {
+				System.out.println("Enter Request ID");
+				long rId = sc.nextInt();
+				Request r = m.findRequestById(rId);
+				m.showRequest(r);
+				sc.nextLine();
+				System.out.println("Enter New Request Status");
+				String rStatus = sc.nextLine();
+				r.status = RequestStatus.valueOf(rStatus);
+				System.out.println("Status have been Changed");
+			}
+
+			if (ch == 10) {
+				m.showFinishedRequests();
+			}
+
+		}
+
 
 
 		}
-	}
 
 	// ================= HELPERS =================
 	private int readInt() {

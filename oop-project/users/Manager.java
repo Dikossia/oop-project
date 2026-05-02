@@ -10,6 +10,7 @@ import academic.Report;
 import academic.Request;
 import enums.ManagerType;
 import core.University;
+import enums.RequestStatus;
 
 
 
@@ -63,12 +64,49 @@ public class Manager extends Employee {
 			System.out.println("No Requests");
 		}
 		else {
-		for(Request r : requests){
-			System.out.println("id: " + r.id);
+		for(Request r : Employee.requests){
+			System.out.println("Request ID: " + r.requestId);
+			System.out.println("id: " + r.senderId);
 			System.out.println("type: " + r.type);
 			System.out.println("status: " + r.status);
 			System.out.println("description: " + r.description);
+			System.out.println();
 		}
+		}
+	}
+
+	public Request findRequestById(long rId){
+		for(Request r : requests){
+			if(r.requestId == rId){
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public void showRequest(Request r){
+		System.out.println("Request ID: " + r.requestId);
+		System.out.println("id: " + r.senderId);
+		System.out.println("type: " + r.type);
+		System.out.println("status: " + r.status);
+		System.out.println("description: " + r.description);
+		System.out.println();
+	}
+
+	public void reviewRequest(Request r, boolean status){
+		if(status){ r.status = RequestStatus.APPROVED;}
+		else{r.status = RequestStatus.REJECTED;}
+	}
+	public void removeRequest(long rId){
+		Request r = this.findRequestById(rId);
+		requests.remove(r);
+	}
+
+	public void showFinishedRequests(){
+		for(Request r : requests){
+			if(r.status != RequestStatus.PENDING){
+				this.showRequest(r);
+			}
 		}
 	}
 

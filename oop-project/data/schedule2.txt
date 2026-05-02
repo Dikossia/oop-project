@@ -1,2 +1,2 @@
-2|Calculus,Lee,D101|Java,White,E202
-100|Discrete Math,Dr_Smith,F303|OOP,Brown,C303|Physics,John,B202
+100|Discrete Math,Dr_Smith,academic.Room@7ef20235|OOP,Brown,academic.Room@27d6c5e0|Physics,John,academic.Room@4f3f5b24
+2

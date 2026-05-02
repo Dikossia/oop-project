@@ -11,7 +11,7 @@ import enums.RequestStatus;
 public abstract class Employee extends User {
 	public double salary;
 	public Date hireDate;
-	public static List<Request> requests;
+	protected static List<Request> requests = new ArrayList<Request>();
 
 	public Employee() {
 			requests = new ArrayList<Request>();
@@ -22,6 +22,9 @@ public abstract class Employee extends User {
 		this.salary = salary;
 		this.hireDate = hireDate;
 		requests = new ArrayList<Request>();
+	}
+	public static List<Request> getRequestInstance(){
+		return requests;
 	}
 
 	public void addRequest(){
@@ -50,7 +53,7 @@ public abstract class Employee extends User {
 				r.type = RequestType.OTHER;
 		}
 
-		r.id = this.id;
+		r.senderId = this.id;
 		r.status = RequestStatus.PENDING;
 		System.out.println("Description: ");
 		r.description = sc.nextLine();
