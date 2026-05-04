@@ -19,10 +19,7 @@ public class DataLoader {
 
 	private static final String COURSE_FILE = "./data/courses.txt";
 	private static final String SCHEDULE_FILE = "./data/schedule.txt";
-	private static final String USERS_FILE = "./data/users.txt";
-	private static final String SCHEDULE_FILE_2 = "./data/schedule2.txt";
 	private static final String REQUEST_FILE = "./data/request.txt";
-	private static final String NEWS_FILE = "./data/news.txt";
 
 	public static List<Course> loadCourses(String fileName) {
 
@@ -279,10 +276,8 @@ public class DataLoader {
 		}
 
 	public static void loadRequests(){
-		University uni = University.getInstance();
 
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(REQUEST_FILE));
+		try (BufferedReader br = new BufferedReader(new FileReader(REQUEST_FILE))) {
 			String line;
 			Manager m = new Manager();
 			while((line = br.readLine()) != null){
@@ -310,7 +305,6 @@ public class DataLoader {
 	}
 
 	public static void saveRequests() {
-		University uni = University.getInstance();
 		try {
 			PrintWriter pw = new PrintWriter(
 						new FileWriter(REQUEST_FILE));

@@ -9,15 +9,14 @@ import academic.News;
 import academic.Report;
 import academic.Request;
 import enums.ManagerType;
-import core.University;
 import enums.RequestStatus;
+import service.University;
 
 
 
 public class Manager extends Employee {
 	public ManagerType type;
 	private static List<News> news;
-	private static List<Report> reports;
 
 	public Manager() {
 		news = new ArrayList<News>();

@@ -60,6 +60,7 @@ public abstract class Employee extends User {
 
 		requests.add(r);
 		System.out.println("Request sent");
+		sc.close();
 	}
 
 	public void addRequest(Request request){

@@ -1,13 +1,11 @@
 package users;
 
-import core.University;
 import java.util.Scanner;
-import enums.UserType;
+import service.University;
 
 public class Admin extends Employee {
 
 	private final Scanner sc = new Scanner(System.in);
-	private final static UserType userType = UserType.Admin;
 
 	public Admin() {
 	}
