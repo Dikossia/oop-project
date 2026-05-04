@@ -1,14 +1,14 @@
-package core;
+package service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import users.User;
+import util.Log;
 import users.Student;
 import users.Employee;
 import academic.Course;
 import research.ResearchProject;
-import academic.News;
 
 public class University {
 	private static University instance = new University();

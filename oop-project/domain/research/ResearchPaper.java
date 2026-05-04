@@ -1,6 +1,5 @@
 package research;
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class ResearchPaper implements Comparable<ResearchPaper>

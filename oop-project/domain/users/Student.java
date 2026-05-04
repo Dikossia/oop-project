@@ -1,15 +1,12 @@
 package users;
 
-import java.io.*;
-import java.util.*;
 import academic.Course;
-import academic.Lesson;
-import academic.StudyMaterial;
-import core.University;
-import exceptions.CreditLimitExceededException;
-import enums.UserType;
 import academic.Schedule;
 import academic.ScheduleEntry;
+import academic.StudyMaterial;
+import exceptions.CreditLimitExceededException;
+import service.University;
+import enums.UserType;
 
 public class Student extends User {
 	public static final int MAX_CREDITS = 21;
