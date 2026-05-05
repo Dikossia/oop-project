@@ -1,9 +1,10 @@
 package academic;
 
+import java.io.Serializable;
 import java.util.Date;
 import enums.ReportType;
 
-public class Report {
+public class Report implements Serializable {
 	public ReportType type;
 	public Date createdDate;
 	public String data;

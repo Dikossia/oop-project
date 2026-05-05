@@ -1,4 +1,4 @@
-package service;
+package core;
 
 import java.io.*;
 import java.util.*;
@@ -13,7 +13,7 @@ import academic.Schedule;
 import academic.ScheduleEntry;
 import enums.RequestType;
 import enums.RequestStatus;
-import util.Log;
+import core.Log;
 
 public class DataLoader {
 
@@ -341,11 +341,11 @@ public class DataLoader {
 				switch (p[0]) {
 
 					case "ADMIN":
-						Admin a = new Admin();
-						a.id = Integer.parseInt(p[1]);
-						a.username = p[2];
-						a.password = p[3];
-						a.email = p[4];
+						User a = UserFactory.createUser(
+							enums.UserType.Admin,
+							Integer.parseInt(p[1]),
+							p[2], p[3], p[4]
+						);
 						users.add(a);
 						break;
 
@@ -364,21 +364,21 @@ public class DataLoader {
 						break;
 
 					case "TEACHER":
-						Teacher t = new Teacher();
-						t.id = Integer.parseInt(p[1]);
-						t.username = p[2];
-						t.password = p[3];
-						t.email = p[4];
+						Teacher t = (Teacher) UserFactory.createUser(
+							enums.UserType.Teacher,
+							Integer.parseInt(p[1]),
+							p[2], p[3], p[4]
+						);
 						t.title = enums.TeacherType.valueOf(p[5]);
 						users.add(t);
 						break;
 
 					case "MANAGER":
-						Manager m = new Manager();
-						m.id = Integer.parseInt(p[1]);
-						m.username = p[2];
-						m.password = p[3];
-						m.email = p[4];
+						Manager m = (Manager) UserFactory.createUser(
+							enums.UserType.Manager,
+							Integer.parseInt(p[1]),
+							p[2], p[3], p[4]
+						);
 						m.type = enums.ManagerType.valueOf(p[5]);
 						users.add(m);
 						break;

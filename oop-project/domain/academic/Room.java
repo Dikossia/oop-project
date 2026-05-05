@@ -1,8 +1,9 @@
 package academic;
 
+import java.io.Serializable;
 import enums.RoomType;
 
-public class Room {
+public class Room implements Serializable {
 	public String roomNumber;
 	public RoomType roomType;
 

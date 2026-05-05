@@ -3,9 +3,10 @@ package research;
 import exceptions.NonResearcherException;
 import users.Employee;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ResearchProject
+public class ResearchProject implements Serializable
 {
     private final String topic;
     private final Set<Researcher> participants;

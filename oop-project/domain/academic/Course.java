@@ -1,10 +1,11 @@
 package academic;
 
+import java.io.Serializable;
 import java.util.*;
 import users.Student;
 import users.Teacher;
 
-public class Course {
+public class Course implements Serializable {
 
     public String name;
     public String code;
@@ -15,6 +16,7 @@ public class Course {
     public List<Teacher> instructors;
     public List<Lesson> lessons;
     public List<StudyMaterial> materials;
+    public List<Enrollment> enrollments;
 
     public Course(String name, String code, int credits) {
         this.name = name;
@@ -24,10 +26,13 @@ public class Course {
         this.instructors = new ArrayList<Teacher>();
         this.lessons = new ArrayList<Lesson>();
         this.materials = new ArrayList<StudyMaterial>();
+        this.enrollments = new ArrayList<Enrollment>();
     }
 
     public void addStudent(Student s) {
-        students.add(s);
+        if(!students.contains(s)) {
+            students.add(s);
+        }
     }
 
     public void addInstructor(Teacher t) {
@@ -40,5 +45,14 @@ public class Course {
 
     public void addMaterial(StudyMaterial material) {
         materials.add(material);
+    }
+
+    public Enrollment findEnrollment(Student student) {
+        for(Enrollment enrollment : enrollments) {
+            if(enrollment.student == student) {
+                return enrollment;
+            }
+        }
+        return null;
     }
 }

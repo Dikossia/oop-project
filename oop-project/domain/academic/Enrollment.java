@@ -1,8 +1,9 @@
 package academic;
 
+import java.io.Serializable;
 import users.Student;
 
-public class Enrollment {
+public class Enrollment implements Serializable {
 	public Student student;
 	public Course course;
 	public Mark mark;

@@ -1,10 +1,11 @@
 package academic;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import enums.LessonType;
 
-public class Lesson {
+public class Lesson implements Serializable {
 	public Date time;
 	public String room;
 	public LessonType type;

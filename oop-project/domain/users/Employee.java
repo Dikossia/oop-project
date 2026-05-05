@@ -27,6 +27,10 @@ public abstract class Employee extends User {
 		return requests;
 	}
 
+	public static void setRequestInstance(List<Request> loadedRequests) {
+		requests = loadedRequests == null ? new ArrayList<Request>() : loadedRequests;
+	}
+
 	public void addRequest(){
 		Scanner sc = new Scanner(System.in);
 		Request r = new Request();
@@ -60,7 +64,6 @@ public abstract class Employee extends User {
 
 		requests.add(r);
 		System.out.println("Request sent");
-		sc.close();
 	}
 
 	public void addRequest(Request request){

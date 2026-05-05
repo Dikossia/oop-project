@@ -2,9 +2,10 @@ package academic;
 
 import enums.RequestStatus;
 import enums.RequestType;
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Request {
+public class Request implements Serializable {
 	private static AtomicLong requestIdCounter = new AtomicLong(0);
 	public int senderId;
 	public RequestType type;

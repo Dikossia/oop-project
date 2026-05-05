@@ -1,24 +1,29 @@
 package core;
 
-import core.*;
 import users.*;
 import academic.*;
 import enums.*;
+import research.ResearchPaper;
+import research.Researcher;
 
 import java.util.*;
 
 public class ConsoleUIController {
 
 	private final Scanner sc = new Scanner(System.in);
-	private final University uni = University.getInstance();
+	private University uni = University.getInstance();
 	private final AuthService authService = new AuthService();
 	private User currentUser;
 
 	public void start() {
-		uni.courses.addAll(DataLoader.loadCourses("./data/courses.txt"));
-		uni.users.addAll(DataLoader.loadUsers("./data/users.txt"));
-		DataLoader.loadSchedule2("./data/schedule2.txt");
-		DataLoader.loadRequests();
+		boolean loaded = DataStore.loadState();
+		uni = University.getInstance();
+		if(!loaded) {
+			uni.courses.addAll(DataLoader.loadCourses("./data/courses.txt"));
+			uni.users.addAll(DataLoader.loadUsers("./data/users.txt"));
+			DataLoader.loadSchedule2("./data/schedule2.txt");
+			DataLoader.loadRequests();
+		}
 		seedUsers();
 
 		while (true) {
@@ -39,11 +44,7 @@ public class ConsoleUIController {
 		int ch = readInt();
 
 		if (ch == 0) {
-
-			DataLoader.saveCourses(uni.courses);
-			DataLoader.saveSchedule2("./data/schedule2.txt");
-			DataLoader.saveRequests();
-			DataLoader.saveUsers(uni.users, "./data/users.txt");
+			DataStore.saveState();
 			System.exit(0);
 		}
 
@@ -129,12 +130,15 @@ public class ConsoleUIController {
 			System.out.println("\n-- STUDENT MENU --");
 			System.out.println("1. View Schedule");
 			System.out.println("2. View Transcript");
-			System.out.println("3. Register First Course");
-			System.out.println("4. Logout");
+			System.out.println("3. Register to Course");
+			System.out.println("4. View Learning Files");
+			System.out.println("5. Submit Task Solution");
+			System.out.println("6. View News");
+			System.out.println("7. Logout");
 
 			int ch = readInt();
 
-			if (ch == 4) {
+			if (ch == 7) {
 				Log l = new Log(currentUser, "Logout");
 				uni.addLog(l);
 				currentUser = null;
@@ -154,10 +158,52 @@ public class ConsoleUIController {
 				}
 				if (ch == 3 && !uni.courses.isEmpty()) {
 					for (int i = 0; i < uni.courses.size(); i++) {
-						System.out.println(uni.courses.get(i));
+						Course c = uni.courses.get(i);
+						System.out.println(i + ". " + c.name + " (" + c.code + ")");
 					}
-					System.out.println("Enter name of an " +
-							"interested course: ");
+					System.out.println("Enter course index:");
+					int index = readInt();
+					if(index >= 0 && index < uni.courses.size()) {
+						s.registerCourse(uni.courses.get(index));
+						System.out.println("Course registration request submitted");
+					}
+				}
+				if(ch == 4) {
+					s.viewLearningFiles();
+				}
+				if(ch == 5) {
+					List<academic.StudyMaterial> tasks = new ArrayList<academic.StudyMaterial>();
+					for(Course course : uni.courses) {
+						if(course.students.contains(s)) {
+							for(academic.StudyMaterial material : course.materials) {
+								if(material.isTask) {
+									tasks.add(material);
+								}
+							}
+						}
+					}
+					if(tasks.isEmpty()) {
+						System.out.println("No tasks available");
+					} else {
+						for(int i = 0; i < tasks.size(); i++) {
+							System.out.println(i + ". " + tasks.get(i));
+						}
+						System.out.println("Choose task index:");
+						int taskIndex = readInt();
+						if(taskIndex >= 0 && taskIndex < tasks.size()) {
+							System.out.println("Enter solution text:");
+							String solutionText = sc.nextLine();
+							s.solveTask(tasks.get(taskIndex), solutionText);
+						}
+					}
+				}
+				if(ch == 6) {
+					if(s.inboxNews.isEmpty()) {
+						System.out.println("No news yet");
+					}
+					for(News news : s.inboxNews) {
+						System.out.println(news);
+					}
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -173,12 +219,14 @@ public class ConsoleUIController {
 			System.out.println("\n-- TEACHER MENU --");
 			System.out.println("1. View Courses");
 			System.out.println("2. Add Lesson");
-			System.out.println("3. Logout");
+			System.out.println("3. Put Mark");
+			System.out.println("4. Print My Papers (sorted)");
+			System.out.println("5. Logout");
 			System.out.println("6. Send Request");
 
 			int ch = readInt();
 
-			if (ch == 3) {
+			if (ch == 5) {
 				currentUser = null;
 				return;
 			}
@@ -194,6 +242,46 @@ public class ConsoleUIController {
 				Lesson l = new Lesson(c.getTime(), "AUTO", LessonType.LECTURE);
 				t.addLessonToCourse(uni.courses.get(0), l);
 				System.out.println("Lesson added");
+			}
+			if(ch == 3) {
+				if(uni.courses.isEmpty()) {
+					System.out.println("No courses in system");
+					continue;
+				}
+				for (int i = 0; i < uni.courses.size(); i++) {
+					System.out.println(i + ". " + uni.courses.get(i).name);
+				}
+				System.out.println("Choose course index:");
+				int courseIndex = readInt();
+				if(courseIndex < 0 || courseIndex >= uni.courses.size()) continue;
+				Course selected = uni.courses.get(courseIndex);
+				if(selected.students.isEmpty()) {
+					System.out.println("No students in this course");
+					continue;
+				}
+				for(int i = 0; i < selected.students.size(); i++) {
+					System.out.println(i + ". " + selected.students.get(i).username);
+				}
+				System.out.println("Choose student index:");
+				int studentIndex = readInt();
+				if(studentIndex < 0 || studentIndex >= selected.students.size()) continue;
+				Student target = selected.students.get(studentIndex);
+				System.out.println("att1:");
+				double a1 = Double.parseDouble(sc.nextLine());
+				System.out.println("att2:");
+				double a2 = Double.parseDouble(sc.nextLine());
+				System.out.println("final:");
+				double fin = Double.parseDouble(sc.nextLine());
+				t.putMark(selected, target, a1, a2, fin);
+				System.out.println("Mark saved");
+			}
+			if(ch == 4) {
+				System.out.println("Sort by: 1-date 2-citations 3-length");
+				int sort = readInt();
+				Comparator<ResearchPaper> comparator = ResearchPaper.BY_DATE;
+				if(sort == 2) comparator = ResearchPaper.BY_CITATION.reversed();
+				if(sort == 3) comparator = ResearchPaper.BY_LENGTH;
+				t.printPapers(comparator);
 			}
 
 		}
@@ -214,6 +302,9 @@ public class ConsoleUIController {
 			System.out.println("8. Remove Request");
 			System.out.println("9. Review Request");
 			System.out.println("10. Finished Requests");
+			System.out.println("11. Generate Marks Report");
+			System.out.println("12. Top Cited Researcher");
+			System.out.println("13. Print All Papers (sorted)");
 			System.out.println();
 
 			int ch = readInt();
@@ -238,7 +329,7 @@ public class ConsoleUIController {
 				System.out.println("Course Code: ");
 				String cCode = sc.nextLine();
 				System.out.println("Course Credits: ");
-				int cCredits = sc.nextInt();
+				int cCredits = readInt();
 
 				Course c = new Course(cName, cCode, cCredits);
 				m.createCourse(c);
@@ -247,6 +338,14 @@ public class ConsoleUIController {
 			if (ch == 6) {
 				m.addRequest();
 			}
+			if(ch == 5) {
+				System.out.println("News title:");
+				String title = sc.nextLine();
+				System.out.println("News content:");
+				String content = sc.nextLine();
+				m.createNews(new News(title, content, new Date(), m.username));
+				System.out.println("News published");
+			}
 
 			if (ch == 7) {
 				m.showRequests();
@@ -254,13 +353,13 @@ public class ConsoleUIController {
 
 			if (ch == 8) {
 				System.out.println("Enter Request ID");
-				long rId = sc.nextInt();
+				long rId = Long.parseLong(sc.nextLine());
 				m.removeRequest(rId);
 			}
 
 			if (ch == 9) {
 				System.out.println("Enter Request ID");
-				long rId = sc.nextInt();
+				long rId = Long.parseLong(sc.nextLine());
 				Request r = m.findRequestById(rId);
 				m.showRequest(r);
 				sc.nextLine();
@@ -272,6 +371,26 @@ public class ConsoleUIController {
 
 			if (ch == 10) {
 				m.showFinishedRequests();
+			}
+			if (ch == 11) {
+				Report report = m.generateReport();
+				System.out.println(report.data);
+			}
+			if (ch == 12) {
+				Researcher topResearcher = uni.getTopCitedResearcher();
+				if(topResearcher == null) {
+					System.out.println("No researchers found");
+				} else {
+					System.out.println("Top cited researcher h-index: " + topResearcher.getHIndex());
+				}
+			}
+			if(ch == 13) {
+				System.out.println("Sort by: 1-date 2-citations 3-length");
+				int sort = readInt();
+				Comparator<ResearchPaper> comparator = ResearchPaper.BY_DATE;
+				if(sort == 2) comparator = ResearchPaper.BY_CITATION.reversed();
+				if(sort == 3) comparator = ResearchPaper.BY_LENGTH;
+				uni.printAllResearchPapers(comparator);
 			}
 
 		}

@@ -1,8 +1,9 @@
 package research;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ResearchPaper implements Comparable<ResearchPaper>
+public class ResearchPaper implements Comparable<ResearchPaper>, Serializable
 {
     private final String doi;
     private final String title;

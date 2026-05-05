@@ -1,10 +1,16 @@
 package users;
 
-public abstract class User {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import academic.News;
+
+public abstract class User implements Serializable {
 	public int id;
 	public String username;
 	public String password;
 	public String email;
+	public List<News> inboxNews = new ArrayList<News>();
 
 	public User() {
 	}
@@ -22,5 +28,9 @@ public abstract class User {
 
 	public String toString() {
 		return id + " " + username + " " + email;
+	}
+
+	public void receiveNews(News news) {
+		inboxNews.add(news);
 	}
 }

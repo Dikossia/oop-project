@@ -1,6 +1,8 @@
 package academic;
 
-public class Mark {
+import java.io.Serializable;
+
+public class Mark implements Serializable {
 	public double att1;
 	public double att2;
 	public double finalExam;

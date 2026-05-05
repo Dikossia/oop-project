@@ -1,5 +1,6 @@
 package academic;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.Map;
 import users.Student;
 import users.Teacher;
 
-public class StudyMaterial {
+public class StudyMaterial implements Serializable {
     public String title;
     public String description;
     public String fileName;

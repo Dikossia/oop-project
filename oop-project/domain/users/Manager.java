@@ -2,6 +2,7 @@ package users;
 
 import java.util.List;
 import java.util.ArrayList;
+import users.User;
 
 import academic.Course;
 import academic.Enrollment;
@@ -10,7 +11,7 @@ import academic.Report;
 import academic.Request;
 import enums.ManagerType;
 import enums.RequestStatus;
-import service.University;
+import core.University;
 
 
 
@@ -36,7 +37,38 @@ public class Manager extends Employee {
 
 	public Report generateReport() {
 		Report r = new Report();
-		r.data = "Simple report";
+		University uni = University.getInstance();
+		int marksCount = 0;
+		double total = 0.0;
+		String bestStudent = "N/A";
+		double bestAverage = -1.0;
+
+		for(User user : uni.users) {
+			if(!(user instanceof Student)) {
+				continue;
+			}
+			Student student = (Student) user;
+			double studentTotal = 0.0;
+			int studentMarks = 0;
+			for(Enrollment enrollment : student.enrollments) {
+				studentTotal += enrollment.mark.getTotal();
+				studentMarks++;
+				total += enrollment.mark.getTotal();
+				marksCount++;
+			}
+			if(studentMarks > 0) {
+				double avg = studentTotal / studentMarks;
+				if(avg > bestAverage) {
+					bestAverage = avg;
+					bestStudent = student.username;
+				}
+			}
+		}
+
+		double overallAverage = marksCount == 0 ? 0.0 : total / marksCount;
+		r.data = "Total marks records: " + marksCount
+				+ "\nOverall average: " + overallAverage
+				+ "\nTop student by average mark: " + bestStudent;
 		return r;
 	}
 
@@ -52,6 +84,7 @@ public class Manager extends Employee {
 
 	public void createNews(News n) {
 		news.add(n);
+		University.getInstance().publishNews(n);
 	}
 
 	public void manageNews(News n) {

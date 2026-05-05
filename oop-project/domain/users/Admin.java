@@ -1,7 +1,8 @@
 package users;
 
 import java.util.Scanner;
-import service.University;
+import core.University;
+import enums.UserType;
 
 public class Admin extends Employee {
 
@@ -20,11 +21,16 @@ public class Admin extends Employee {
 	    System.out.print("Email: ");
 	    String email = sc.nextLine();
 
-	    Student s = new Student(100, username, password, email, 0, 1, 0, 0);
+		System.out.println("Type: 1-Admin 2-Student 3-Teacher 4-Manager");
+		int typeChoice = Integer.parseInt(sc.nextLine());
+		UserType type = UserType.Student;
+		if(typeChoice == 1) type = UserType.Admin;
+		if(typeChoice == 3) type = UserType.Teacher;
+		if(typeChoice == 4) type = UserType.Manager;
 
-
-	    University.getInstance().users.add(s);
-	    System.out.println("User added: " + s.username);
+	    User user = UserFactory.createUser(type, 100 + University.getInstance().users.size(), username, password, email);
+	    University.getInstance().users.add(user);
+	    System.out.println("User added: " + user.username);
 	}
 
 	public void removeUser() {

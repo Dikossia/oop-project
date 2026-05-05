@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import academic.Course;
+import academic.Enrollment;
 import academic.Lesson;
 import academic.Mark;
 import academic.StudyMaterial;
@@ -31,6 +32,14 @@ public class Teacher extends Employee implements Researcher {
 		mark.att1 = a1;
 		mark.att2 = a2;
 		mark.finalExam = fin;
+	}
+
+	public void putMark(Course course, Student student, double a1, double a2, double fin) {
+		Enrollment enrollment = course.findEnrollment(student);
+		if(enrollment == null) {
+			throw new IllegalStateException("Student is not enrolled in this course");
+		}
+		putMark(enrollment.mark, a1, a2, fin);
 	}
 
 	public void viewStudents() {

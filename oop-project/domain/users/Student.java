@@ -1,12 +1,17 @@
 package users;
 
 import academic.Course;
+import academic.Enrollment;
 import academic.Schedule;
 import academic.ScheduleEntry;
 import academic.StudyMaterial;
 import exceptions.CreditLimitExceededException;
-import service.University;
+import exceptions.LowHIndexException;
+import research.Researcher;
+import core.University;
 import enums.UserType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Student extends User {
 	public static final int MAX_CREDITS = 21;
@@ -16,8 +21,11 @@ public class Student extends User {
 	public int failedCourses;
 	public static final UserType userType = UserType.Student;
 	public Schedule schedule;
+	public List<Enrollment> enrollments;
+	public Researcher researchSupervisor;
 
 	public Student() {
+		enrollments = new ArrayList<Enrollment>();
 	}
 
 	public Student(int id, String username, String password, String email,
@@ -28,18 +36,49 @@ public class Student extends User {
 		this.credits = credits;
 		this.failedCourses = failedCourses;
 		schedule = new Schedule();
+		enrollments = new ArrayList<Enrollment>();
 	}
 
 	public void registerCourse(Course course) throws CreditLimitExceededException {
+		if(course == null || !course.isOpen) {
+			throw new IllegalStateException("Course is closed for registration");
+		}
+		if(failedCourses > 3) {
+			throw new IllegalStateException("Registration is blocked: too many failed courses");
+		}
+		if(course.findEnrollment(this) != null) {
+			throw new IllegalStateException("Already registered to this course");
+		}
 		if(credits + course.credits > MAX_CREDITS) {
 			throw new CreditLimitExceededException("Credit limit exceeded");
 		}
 		credits += course.credits;
 		course.addStudent(this);
+		Enrollment enrollment = new Enrollment(this, course);
+		course.enrollments.add(enrollment);
+		enrollments.add(enrollment);
 	}
 
 	public void viewTranscript() {
 		System.out.println("Student: " + username + " GPA: " + gpa);
+		if(enrollments.isEmpty()) {
+			System.out.println("No registered courses yet");
+			return;
+		}
+		for(Enrollment enrollment : enrollments) {
+			System.out.println(enrollment.course.name + " -> " + enrollment.mark);
+		}
+	}
+
+	public void assignResearchSupervisor(Researcher supervisor) throws LowHIndexException {
+		if(year < 4) {
+			researchSupervisor = supervisor;
+			return;
+		}
+		if(supervisor == null || supervisor.getHIndex() < 3) {
+			throw new LowHIndexException("4th year student must have a supervisor with h-index >= 3");
+		}
+		researchSupervisor = supervisor;
 	}
 
 

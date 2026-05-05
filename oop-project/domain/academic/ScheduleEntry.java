@@ -1,8 +1,9 @@
 package academic;
 
+import java.io.Serializable;
 import academic.Course;
 
-public class ScheduleEntry {
+public class ScheduleEntry implements Serializable {
 	public String courseName;
 	public String teacherName;
 	public Room room;

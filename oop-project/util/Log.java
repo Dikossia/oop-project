@@ -1,9 +1,10 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Date;
 import users.User;
 
-public class Log {
+public class Log implements Serializable {
 	public User user;
 	public String action;
 	public Date date;
