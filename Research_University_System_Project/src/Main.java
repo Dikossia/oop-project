@@ -1,27 +1,10 @@
-import academic.Course;
-import academic.Lesson;
-import academic.Mark;
-import academic.RegistrationRequest;
+import academic.*;
 import communication.Message;
-import comparators.PaperCitationsComparator;
-import comparators.PaperDateComparator;
-import comparators.PaperPagesComparator;
-import enums.LessonType;
-import enums.ManagerType;
-import enums.School;
-import enums.TeacherTitle;
-import exceptions.AuthenticationException;
-import exceptions.CourseRegistrationException;
-import exceptions.CreditLimitExceededException;
-import exceptions.LowHIndexException;
-import exceptions.MarkValidationException;
-import exceptions.NotResearcherException;
-import exceptions.UserNotFoundException;
+import enums.*;
+import exceptions.*;
 import facade.UniversitySystem;
 import factories.UserFactory;
-import research.ResearchPaper;
-import research.ResearchProject;
-import research.Researcher;
+import research.*;
 import reports.Report;
 import storage.DataStore;
 import users.*;
@@ -156,12 +139,12 @@ public class Main {
         system.assignSupervisor(data.student, data.professor);
         System.out.println("Supervisor assigned to " + data.student.getFullName() + ": " + data.professor.getFullName());
 
-        printPaperSorting("Professor papers sorted by citations", data.professor, new PaperCitationsComparator());
-        printPaperSorting("Professor papers sorted by date", data.professor, new PaperDateComparator());
-        printPaperSorting("Professor papers sorted by pages", data.professor, new PaperPagesComparator());
+        printPaperSorting("Professor papers sorted by citations", data.professor, ResearchPaper.BY_CITATION);
+        printPaperSorting("Professor papers sorted by date", data.professor, ResearchPaper.BY_DATE);
+        printPaperSorting("Professor papers sorted by pages", data.professor, ResearchPaper.BY_LENGTH);
 
         System.out.println("\nAll papers sorted by citations:");
-        system.getResearchService().printAllPapers(new PaperCitationsComparator());
+        system.getResearchService().printAllPapers(ResearchPaper.BY_CITATION);
 
         Researcher topOverall = system.getResearchService().getTopCitedResearcher();
         Researcher topSITE = system.getResearchService().getTopCitedResearcherBySchool(School.SITE);
@@ -562,12 +545,12 @@ public class Main {
         data.oop.addLesson(new Lesson("Inheritance and Polymorphism", LocalDateTime.now().plusDays(1), LessonType.LECTURE, "A-101", data.professor));
         data.oop.addLesson(new Lesson("UML and Design Patterns Practice", LocalDateTime.now().plusDays(2), LessonType.PRACTICE, "A-102", data.seniorLecturer));
 
-        data.paper1 = new ResearchPaper("Blockchain-based Academic Records", "IEEE Access", 12,
-                LocalDate.of(2024, 5, 12), "10.1109/example.001", 35);
-        data.paper2 = new ResearchPaper("AI Methods in Research-Oriented Universities", "ACM Education Review", 20,
-                LocalDate.of(2025, 3, 20), "10.1145/example.002", 60);
-        data.paper3 = new ResearchPaper("Financial Analytics for University Management", "Business Informatics Journal", 18,
-                LocalDate.of(2025, 1, 15), "10.1000/example.003", 72);
+        data.paper1 = new ResearchPaper("10.1109/example.001", "Blockchain-based Academic Records", "IEEE Access", 12,
+                LocalDate.of(2024, 5, 12));
+        data.paper2 = new ResearchPaper("10.1145/example.002", "AI Methods in Research-Oriented Universities", "ACM Education Review", 20,
+                LocalDate.of(2025, 3, 20));
+        data.paper3 = new ResearchPaper("10.1000/example.003", "Financial Analytics for University Management", "Business Informatics Journal", 18,
+                LocalDate.of(2025, 1, 15));
 
         data.paper1.addAuthor(data.professor);
         data.paper2.addAuthor(data.professor);
@@ -681,7 +664,7 @@ public class Main {
         int pages = readInt(scanner, "Pages: ");
         int citations = readInt(scanner, "Citations: ");
         String doi = "10.demo/" + System.currentTimeMillis();
-        ResearchPaper paper = new ResearchPaper(title, journal, pages, LocalDate.now(), doi, citations);
+        ResearchPaper paper = new ResearchPaper(doi, title, journal, pages, LocalDate.now());
         paper.addAuthor(researcher);
         system.getResearchService().addPaper(paper);
         System.out.println("Research paper added: " + paper);

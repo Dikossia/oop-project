@@ -1,6 +1,7 @@
 package research;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 public class ResearchPaper implements Serializable, Comparable<ResearchPaper>
@@ -10,10 +11,10 @@ public class ResearchPaper implements Serializable, Comparable<ResearchPaper>
     private final String journal;
     private final int pages;
     private final int citations;
-    private final Date publishDate;
+    private final LocalDate publishDate;
     private final List<Researcher> authors;
 
-    public ResearchPaper(String doi, String title, String journal, int pages, Date publishDate, List<Researcher> authors)
+    public ResearchPaper(String doi, String title, String journal, int pages, LocalDate publishDate)
     {
         this.doi = doi;
         this.title = title;
@@ -21,7 +22,7 @@ public class ResearchPaper implements Serializable, Comparable<ResearchPaper>
         this.pages = pages;
         this.citations = 0;
         this.publishDate = publishDate;
-        this.authors = new ArrayList<>(authors);
+        this.authors = new ArrayList<>();
     }
 
     public String getDoi()
@@ -49,7 +50,7 @@ public class ResearchPaper implements Serializable, Comparable<ResearchPaper>
         return citations;
     }
 
-    public Date getPublishDate()
+    public LocalDate getPublishDate()
     {
         return publishDate;
     }
