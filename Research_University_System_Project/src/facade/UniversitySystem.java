@@ -76,7 +76,7 @@ public class UniversitySystem {
     }
 
     public void printAllResearchPapersByCitations() {
-        researchService.printAllPapers(ResearchPaper);
+        researchService.printAllPapers(ResearchPaper.BY_CITATION);
     }
 
     public Report generateCourseReport(Course course) {
