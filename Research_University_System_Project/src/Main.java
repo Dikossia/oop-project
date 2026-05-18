@@ -17,7 +17,6 @@ import java.util.Scanner;
 
 /**
  * Entry point for the Research-Oriented University Information System.
- *
  * The program has two modes:
  * 1) automatic demo mode for quick defense presentation;
  * 2) interactive console menu where users log in and choose actions manually.
@@ -122,11 +121,11 @@ public class Main {
         system.getNewsService().publishNews("Registration week", "Course registration is open until Friday.");
 
         printHeader("8. RESEARCH PAPERS, COMPARATORS AND PROJECTS");
-        system.getResearchService().addResearcherToProject(data.professor, data.digitalProject);
-        system.getResearchService().addResearcherToProject(data.researchStudent, data.digitalProject);
+        system.getResearchService().addProjectParticipant(data.professor, data.digitalProject);
+        system.getResearchService().addProjectParticipant(data.researchStudent, data.digitalProject);
 
         try {
-            system.getResearchService().addResearcherToProject(data.student, data.digitalProject);
+            system.getResearchService().addProjectParticipant(data.student, data.digitalProject);
         } catch (NotResearcherException e) {
             System.out.println("Expected NotResearcherException: " + e.getMessage());
         }
@@ -146,9 +145,9 @@ public class Main {
         System.out.println("\nAll papers sorted by citations:");
         system.getResearchService().printAllPapers(ResearchPaper.BY_CITATION);
 
-        Researcher topOverall = system.getResearchService().getTopCitedResearcher();
-        Researcher topSITE = system.getResearchService().getTopCitedResearcherBySchool(School.SITE);
-        Researcher top2025 = system.getResearchService().getTopCitedResearcherOfYear(2025);
+        Researcher topOverall = system.getResearchService().getMostCitedResearcher();
+        Researcher topSITE = system.getResearchService().getMostCitedResearcherBySchool(School.SITE);
+        Researcher top2025 = system.getResearchService().getMostCitedResearcherByYear(2025);
 
         System.out.println("Top cited researcher overall: " + researcherName(topOverall));
         System.out.println("Top cited researcher in SITE: " + researcherName(topSITE));
@@ -458,12 +457,12 @@ public class Main {
                     case 6:
                         ResearchProject project = getOrCreateDemoProject(system);
                         if (researcher instanceof User) {
-                            system.getResearchService().addResearcherToProject((User) researcher, project);
+                            system.getResearchService().addProjectParticipant((User) researcher, project);
                             System.out.println("Joined project: " + project.getTopic());
                         }
                         break;
                     case 7:
-                        System.out.println("Top cited researcher: " + researcherName(system.getResearchService().getTopCitedResearcher()));
+                        System.out.println("Top cited researcher: " + researcherName(system.getResearchService().getMostCitedResearcher()));
                         break;
                     case 0:
                         return;

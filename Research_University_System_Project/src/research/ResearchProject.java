@@ -1,12 +1,12 @@
 package research;
 
 import exceptions.NotResearcherException;
-import users.User;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class ResearchProject implements Serializable {
+public class ResearchProject implements Serializable
+{
     private final String topic;
     private final Set<Researcher> participants;
     private final Set<ResearchPaper> papers;
@@ -18,60 +18,37 @@ public class ResearchProject implements Serializable {
         this.papers = new HashSet<>();
     }
 
-    public boolean addParticipant(User user) throws NotResearcherException
+    public void addParticipant(Researcher researcher) throws NotResearcherException
     {
-        if (!(user instanceof Researcher researcher))
-        {
-            throw new NotResearcherException(user.getId() + " is NOT researcher");
-        }
-
         if (!participants.contains(researcher))
         {
             participants.add(researcher);
             researcher.getResearchProfile().addProject(this);
-
-            return true;
         }
-
-        return false;
     }
 
-    public boolean deleteParticipant(User user) throws NotResearcherException
+    public void deleteParticipant(Researcher researcher)
     {
-        if (!(user instanceof Researcher researcher))
-        {
-            throw new NotResearcherException(user.getId() + " is NOT researcher");
-        }
-
         if (participants.contains(researcher))
         {
             participants.remove(researcher);
             researcher.getResearchProfile().removeProject(this);
-
-            return true;
         }
-
-        return false;
     }
 
-    public boolean findParticipant(User user) throws NotResearcherException
+    public boolean findParticipant(Researcher researcher)
     {
-        if (!(user instanceof Researcher researcher))
-        {
-            throw new NotResearcherException(user.getId() + " is NOT researcher");
-        }
-
         return participants.contains(researcher);
     }
 
-    public boolean addPaper(ResearchPaper paper)
+    public void addPaper(ResearchPaper paper)
     {
-        return papers.add(paper);
+        papers.add(paper);
     }
 
-    public boolean deletePaper(ResearchPaper paper)
+    public void deletePaper(ResearchPaper paper)
     {
-        return papers.remove(paper);
+        papers.remove(paper);
     }
 
     public boolean findPaper(ResearchPaper paper)

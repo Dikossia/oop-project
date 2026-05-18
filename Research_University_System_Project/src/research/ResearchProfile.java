@@ -115,5 +115,9 @@ public class ResearchProfile implements Serializable
                         
         """, school, hIndex, getCitations(), papersList, projectsList
         );
+
     }
+
+    public static final Comparator<ResearchProfile> BY_CITATION =
+            Comparator.comparing(ResearchProfile::getCitations);
 }
