@@ -490,21 +490,22 @@ public class Main {
                 450000, LocalDate.of(2021, 2, 15), ManagerType.OR
         );
         data.student = UserFactory.createStudent(
-                "S001", "student", "student123", "Aibyn", "Student", "student@uni.kz", 4
-        );
+                "S001", "diana", "diana123", "Diana", "Abdrakhman", "diana@uni.kz", 4
+   );
         data.secondStudent = UserFactory.createStudent(
-                "S002", "madina", "madina123", "Madina", "Student", "madina@uni.kz", 2
+                "S002", "yerdauit", "yerdauit123", "Yerdauit", "Yerlanuly", "yerdauit@uni.kz", 3
         );
         data.researchStudent = UserFactory.createResearchStudent(
-                "S003", "researchStudent", "rs123", "Dias", "Researcher", "dias@uni.kz",
+                "S003", "margulan", "margulan123", "Margulan", "Zhaskairatuly", "margulan@uni.kz",
                 4, 4, School.SITE
-        );
+)       ;
         data.seniorLecturer = UserFactory.createTeacher(
-                "T001", "teacher", "teacher123", "Arman", "Teacher", "teacher@uni.kz",
+                "T001", "muragul", "muragul123", "Muragul", "Muratbekova", "muragul@uni.kz",
                 400000, LocalDate.of(2019, 9, 1), TeacherTitle.SENIOR_LECTOR
         );
+
         data.professor = UserFactory.createProfessor(
-                "P001", "prof", "prof123", "Saule", "Professor", "prof@uni.kz",
+                "P001", "muragul", "muragul123", "Muragul", "Muratbekova", "muragul@uni.kz",
                 600000, LocalDate.of(2015, 9, 1), 7, School.SITE
         );
         data.weakResearcher = UserFactory.createResearchEmployee(
